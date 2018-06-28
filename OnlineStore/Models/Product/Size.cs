@@ -6,7 +6,7 @@ using System.Web;
 
 namespace OnlineStore.Models.Product
 {
-    public class SizeWithAmount
+    public class Size
     {
         [Key]
         public long SizeId { get; set; }
