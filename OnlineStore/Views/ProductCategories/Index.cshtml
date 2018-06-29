@@ -1,13 +1,13 @@
-﻿@model IEnumerable<OnlineStore.Models.Product.ProductCategory>
+﻿@model IEnumerable<OnlineStore.ViewModels.ProductCategories.ProductCategoryViewModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Lista kategorii produktów";
 }
 
-<h2>Index</h2>
+<h2>Lista kategorii produktów</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Dodaj nową kategorię", "Create")
 </p>
 <table class="table">
     <tr>
@@ -23,9 +23,9 @@
             @Html.DisplayFor(modelItem => item.CategoryName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CategoryId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.CategoryId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.CategoryId })
+            @Html.ActionLink("Edytuj", "Edit", new { id=item.CategoryId }) |
+            @Html.ActionLink("Szczegóły", "Details", new { id=item.CategoryId }) |
+            @Html.ActionLink("Usuń", "Delete", new { id=item.CategoryId })
         </td>
     </tr>
 }

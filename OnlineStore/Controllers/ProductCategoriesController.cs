@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using OnlineStore.Models;
 using OnlineStore.Models.Product;
+using OnlineStore.ViewModels.ProductCategories;
 
 namespace OnlineStore.Controllers
 {
@@ -18,7 +19,15 @@ namespace OnlineStore.Controllers
         // GET: ProductCategories
         public ActionResult Index()
         {
-            return View(db.ProductCategories.ToList());
+            List<ProductCategory> productCategories = db.ProductCategories.ToList();
+            List<ProductCategoryViewModel> categoriesViewModel = new List<ProductCategoryViewModel>();
+            foreach (ProductCategory category in productCategories)
+            {
+                ProductCategoryViewModel productCategoryViewModel = new ProductCategoryViewModel(category);
+                categoriesViewModel.Add(productCategoryViewModel);
+            }
+            
+            return View(categoriesViewModel);
         }
 
         // GET: ProductCategories/Details/5
@@ -33,7 +42,9 @@ namespace OnlineStore.Controllers
             {
                 return HttpNotFound();
             }
-            return View(productCategory);
+            ProductCategoryViewModel productCategoryViewModel = new ProductCategoryViewModel(productCategory);
+            
+            return View(productCategoryViewModel);
         }
 
         // GET: ProductCategories/Create
@@ -43,20 +54,19 @@ namespace OnlineStore.Controllers
         }
 
         // POST: ProductCategories/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CategoryId,CategoryName")] ProductCategory productCategory)
+        public ActionResult Create([Bind(Include = "CategoryId,CategoryName")] ProductCategoryViewModel productCategoryViewModel)
         {
             if (ModelState.IsValid)
             {
+                ProductCategory productCategory = productCategoryViewModel.UpdateToDomainModel();
                 db.ProductCategories.Add(productCategory);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(productCategory);
+            return View(productCategoryViewModel);
         }
 
         // GET: ProductCategories/Edit/5
@@ -71,23 +81,24 @@ namespace OnlineStore.Controllers
             {
                 return HttpNotFound();
             }
-            return View(productCategory);
+            ProductCategoryViewModel productCategoryViewModel = new ProductCategoryViewModel(productCategory);
+
+            return View(productCategoryViewModel);
         }
 
         // POST: ProductCategories/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CategoryId,CategoryName")] ProductCategory productCategory)
+        public ActionResult Edit([Bind(Include = "CategoryId,CategoryName")] ProductCategoryViewModel productCategoryViewModel)
         {
             if (ModelState.IsValid)
             {
+                ProductCategory productCategory = productCategoryViewModel.UpdateToDomainModel();
                 db.Entry(productCategory).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(productCategory);
+            return View(productCategoryViewModel);
         }
 
         // GET: ProductCategories/Delete/5
@@ -102,7 +113,9 @@ namespace OnlineStore.Controllers
             {
                 return HttpNotFound();
             }
-            return View(productCategory);
+            ProductCategoryViewModel productCategoryViewModel = new ProductCategoryViewModel(productCategory);
+
+            return View(productCategoryViewModel);
         }
 
         // POST: ProductCategories/Delete/5
