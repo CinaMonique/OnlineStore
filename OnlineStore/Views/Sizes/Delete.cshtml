@@ -1,0 +1,48 @@
+﻿@model OnlineStore.Models.Product.Size
+
+@{
+    ViewBag.Title = "Usuń rozmiar";
+}
+
+<h2>Usuń rozmiar</h2>
+
+<h3>Czy na pewno chcesz usunąć wybrany rozmiar produktów?</h3>
+<div>
+    <h4>Rozmiar produktów</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductCategory.CategoryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductCategory.CategoryName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SizeAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SizeAmount)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Usuń" class="btn btn-default" /> |
+            @Html.ActionLink("Wróć do listy rozmiarów", "Index")
+        </div>
+    }
+</div>

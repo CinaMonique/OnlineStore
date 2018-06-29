@@ -31,5 +31,7 @@ namespace OnlineStore.Models
         }
 
         public System.Data.Entity.DbSet<OnlineStore.Models.Product.ProductCategory> ProductCategories { get; set; }
+
+        public System.Data.Entity.DbSet<OnlineStore.Models.Product.Size> Sizes { get; set; }
     }
 }
