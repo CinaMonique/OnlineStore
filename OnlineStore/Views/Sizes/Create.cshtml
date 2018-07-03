@@ -1,4 +1,4 @@
-﻿@model OnlineStore.Models.Product.Size
+﻿@model OnlineStore.ViewModels.ProductSizes.SizeViewModel
 
 @{
     ViewBag.Title = "Dodaj rozmiar";
@@ -6,7 +6,7 @@
 
 <h2>Dodaj rozmiar</h2>
 
-
+@Html.HiddenFor(model => model.CategoryId)
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
@@ -15,27 +15,12 @@
         <h4>Rozmiar produktów</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.CategoryId, "CategoryId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.SizeName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.SizeName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.SizeName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SizeAmount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SizeAmount, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SizeAmount, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -48,7 +33,7 @@
 }
 
 <div>
-    @Html.ActionLink("Wróć do listy rozmiarów", "Index")
+    @Html.ActionLink("Wróć do listy rozmiarów", "Index", new { categoryId = Model.CategoryId})
 </div>
 
 @section Scripts {

@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using OnlineStore.Models;
 using OnlineStore.Models.Product;
+using OnlineStore.ViewModels.ProductCategories;
+using OnlineStore.ViewModels.ProductSizes;
 
 namespace OnlineStore.Controllers
 {
@@ -15,99 +17,95 @@ namespace OnlineStore.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Sizes
-        public ActionResult Index()
+        // GET: Sizes/ShowCategories
+        public ActionResult ShowCategories()
         {
-            var sizes = db.Sizes.Include(s => s.ProductCategory);
-            return View(sizes.ToList());
+            List<ProductCategory> productCategories = db.ProductCategories.ToList();
+            List<ProductCategoryViewModel> categoriesViewModel = new List<ProductCategoryViewModel>();
+            foreach (ProductCategory category in productCategories)
+            {
+                ProductCategoryViewModel productCategoryViewModel = new ProductCategoryViewModel(category);
+                categoriesViewModel.Add(productCategoryViewModel);
+            }
+
+            return View("ShowCategories", categoriesViewModel);
         }
 
-        // GET: Sizes/Details/5
-        public ActionResult Details(long? id)
+
+        // GET: Sizes?categoryId=3
+        public ActionResult Index(long? categoryId)
         {
-            if (id == null)
+            if (categoryId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Size size = db.Sizes.Find(id);
-            if (size == null)
+            ViewBag.CategoryId = categoryId;
+            var sizes = db.Sizes.Where(s => s.CategoryId == categoryId).Include(s => s.ProductCategory);
+            ProductCategory category = db.ProductCategories.Find(categoryId);
+            if (category == null)
             {
-                return HttpNotFound();
+                return HttpNotFound("Wybrana kategoria nie istnieje lub została usunięta.");
             }
-            return View(size);
+            ViewBag.CategoryName = category.CategoryName;
+            List<SizeViewModel> sizesViewModels = new List<SizeViewModel>();
+            foreach (Size size in sizes)
+            {
+                SizeViewModel sizeViewModel = new SizeViewModel(size);
+                sizesViewModels.Add(sizeViewModel);
+            }
+            return View(sizesViewModels);
         }
 
-        // GET: Sizes/Create
-        public ActionResult Create()
+        // GET: Sizes/Create/5
+        public ActionResult Create(long categoryId)
         {
-            ViewBag.CategoryId = new SelectList(db.ProductCategories, "CategoryId", "CategoryName");
-            return View();
+            Size size = new Size() {CategoryId = categoryId};
+            SizeViewModel sizeViewModel = new SizeViewModel(size);
+            return View(sizeViewModel);
         }
 
-        // POST: Sizes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Sizes/Create/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SizeId,CategoryId,SizeName,SizeAmount")] Size size)
+        public ActionResult Create([Bind(Include = "SizeId,CategoryId,SizeName,")] SizeViewModel sizeViewModel)
         {
+            List<Size> sizes = db.Sizes.ToList();
+            if (sizes.Exists(x => String.Equals(x.SizeName, sizeViewModel.SizeName, StringComparison.OrdinalIgnoreCase)))
+            {
+                ModelState.AddModelError("SizeName", "Wpisany rozmiar już istnieje");
+            }
             if (ModelState.IsValid)
             {
+                Size size = sizeViewModel.UpdateToDomainModel();
                 db.Sizes.Add(size);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new {categoryId = size.CategoryId});
             }
 
-            ViewBag.CategoryId = new SelectList(db.ProductCategories, "CategoryId", "CategoryName", size.CategoryId);
-            return View(size);
+            return View(sizeViewModel);
         }
 
-        // GET: Sizes/Edit/5
-        public ActionResult Edit(long? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Size size = db.Sizes.Find(id);
-            if (size == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.CategoryId = new SelectList(db.ProductCategories, "CategoryId", "CategoryName", size.CategoryId);
-            return View(size);
-        }
-
-        // POST: Sizes/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SizeId,CategoryId,SizeName,SizeAmount")] Size size)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(size).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.CategoryId = new SelectList(db.ProductCategories, "CategoryId", "CategoryName", size.CategoryId);
-            return View(size);
-        }
 
         // GET: Sizes/Delete/5
         public ActionResult Delete(long? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Szukane id rozmiaru nie istnieje.");
             }
             Size size = db.Sizes.Find(id);
             if (size == null)
             {
-                return HttpNotFound();
+                return HttpNotFound($"Rozmiar o id {id} nie istnieje lub został usunięty.");
             }
-            return View(size);
+            ProductCategory category = db.ProductCategories.Find(size.CategoryId);
+            if (category == null)
+            {
+                return HttpNotFound("Wybrana kategoria nie istnieje lub została usunięta.");
+            }
+            ViewBag.CategoryName = category.CategoryName;
+            SizeViewModel sizeViewModel = new SizeViewModel(size);
+            return View(sizeViewModel);
         }
 
         // POST: Sizes/Delete/5
@@ -116,9 +114,14 @@ namespace OnlineStore.Controllers
         public ActionResult DeleteConfirmed(long id)
         {
             Size size = db.Sizes.Find(id);
+            if (size == null)
+            {
+                return HttpNotFound("Wybrany rozmiar nie istnieje lub został usunięty.");
+            }
+            long categoryIdFromSize = size.CategoryId;
             db.Sizes.Remove(size);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new {categoryId = categoryIdFromSize});
         }
 
         protected override void Dispose(bool disposing)
