@@ -30,23 +30,6 @@ namespace OnlineStore.Controllers
             return View(categoriesViewModel);
         }
 
-        // GET: ProductCategories/Details/5
-        public ActionResult Details(long? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ProductCategory productCategory = db.ProductCategories.Find(id);
-            if (productCategory == null)
-            {
-                return HttpNotFound();
-            }
-            ProductCategoryViewModel productCategoryViewModel = new ProductCategoryViewModel(productCategory);
-            
-            return View(productCategoryViewModel);
-        }
-
         // GET: ProductCategories/Create
         public ActionResult Create()
         {
