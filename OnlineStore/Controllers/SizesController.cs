@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using OnlineStore.Models;
 using OnlineStore.Models.Product;
+using OnlineStore.Reusorces;
 using OnlineStore.ViewModels.ProductCategories;
 using OnlineStore.ViewModels.ProductSizes;
 
@@ -17,8 +18,31 @@ namespace OnlineStore.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Sizes/ShowCategories
-        public ActionResult ShowCategories()
+        // GET: Sizes?categoryId=3
+        public ActionResult Index(long? categoryId)
+        {
+            if (categoryId == null)
+            {
+                return ShowCategories();
+            }
+            ViewBag.CategoryId = categoryId;
+            ProductCategory category = db.ProductCategories.Find(categoryId);
+            if (category == null)
+            {
+                return HttpNotFound(ErrorMessage.CategoryDoesNotExist);
+            }
+            var sizes = db.Sizes.Where(s => s.CategoryId == categoryId).Include(s => s.ProductCategory);
+            ViewBag.CategoryName = category.CategoryName;
+            List<SizeViewModel> sizesViewModels = new List<SizeViewModel>();
+            foreach (Size size in sizes)
+            {
+                SizeViewModel sizeViewModel = new SizeViewModel(size);
+                sizesViewModels.Add(sizeViewModel);
+            }
+            return View(sizesViewModels);
+        }
+
+        private ActionResult ShowCategories()
         {
             List<ProductCategory> productCategories = db.ProductCategories.ToList();
             List<ProductCategoryViewModel> categoriesViewModel = new List<ProductCategoryViewModel>();
@@ -31,34 +55,14 @@ namespace OnlineStore.Controllers
             return View("ShowCategories", categoriesViewModel);
         }
 
-
-        // GET: Sizes?categoryId=3
-        public ActionResult Index(long? categoryId)
-        {
-            if (categoryId == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ViewBag.CategoryId = categoryId;
-            var sizes = db.Sizes.Where(s => s.CategoryId == categoryId).Include(s => s.ProductCategory);
-            ProductCategory category = db.ProductCategories.Find(categoryId);
-            if (category == null)
-            {
-                return HttpNotFound("Wybrana kategoria nie istnieje lub została usunięta.");
-            }
-            ViewBag.CategoryName = category.CategoryName;
-            List<SizeViewModel> sizesViewModels = new List<SizeViewModel>();
-            foreach (Size size in sizes)
-            {
-                SizeViewModel sizeViewModel = new SizeViewModel(size);
-                sizesViewModels.Add(sizeViewModel);
-            }
-            return View(sizesViewModels);
-        }
-
         // GET: Sizes/Create/5
         public ActionResult Create(long categoryId)
         {
+            int categoryCount = db.ProductCategories.Count(c => c.CategoryId == categoryId);
+            if (categoryCount == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CategoryDoesNotExist);
+            }
             Size size = new Size() {CategoryId = categoryId};
             SizeViewModel sizeViewModel = new SizeViewModel(size);
             return View(sizeViewModel);
@@ -67,15 +71,21 @@ namespace OnlineStore.Controllers
         // POST: Sizes/Create/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SizeId,CategoryId,SizeName,")] SizeViewModel sizeViewModel)
+        public ActionResult Create([Bind(Include = "CategoryId,SizeName")] SizeViewModel sizeViewModel)
         {
-            List<Size> sizes = db.Sizes.ToList();
-            if (sizes.Exists(x => String.Equals(x.SizeName, sizeViewModel.SizeName, StringComparison.OrdinalIgnoreCase)))
+            int categoryCount = db.ProductCategories.Count(c => c.CategoryId == sizeViewModel.CategoryId);
+            if (categoryCount == 0)
             {
-                ModelState.AddModelError("SizeName", "Wpisany rozmiar już istnieje");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CategoryDoesNotExist);
             }
             if (ModelState.IsValid)
             {
+                List<Size> sizes = db.Sizes.Where(s => s.CategoryId == sizeViewModel.CategoryId).ToList();
+                if (sizes.Exists(x => String.Equals(x.SizeName, sizeViewModel.SizeName, StringComparison.OrdinalIgnoreCase)))
+                {
+                    ModelState.AddModelError("SizeName", "Wpisany rozmiar już istnieje");
+                    return View(sizeViewModel);
+                }
                 Size size = sizeViewModel.UpdateToDomainModel();
                 db.Sizes.Add(size);
                 db.SaveChanges();
@@ -91,18 +101,14 @@ namespace OnlineStore.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Szukane id rozmiaru nie istnieje.");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.SizeIdDoesNotExist);
             }
             Size size = db.Sizes.Find(id);
             if (size == null)
             {
-                return HttpNotFound($"Rozmiar o id {id} nie istnieje lub został usunięty.");
+                return HttpNotFound(ErrorMessage.SizeDoesNotExist);
             }
             ProductCategory category = db.ProductCategories.Find(size.CategoryId);
-            if (category == null)
-            {
-                return HttpNotFound("Wybrana kategoria nie istnieje lub została usunięta.");
-            }
             ViewBag.CategoryName = category.CategoryName;
             SizeViewModel sizeViewModel = new SizeViewModel(size);
             return View(sizeViewModel);
@@ -116,7 +122,7 @@ namespace OnlineStore.Controllers
             Size size = db.Sizes.Find(id);
             if (size == null)
             {
-                return HttpNotFound("Wybrany rozmiar nie istnieje lub został usunięty.");
+                return HttpNotFound(ErrorMessage.SizeDoesNotExist);
             }
             long categoryIdFromSize = size.CategoryId;
             db.Sizes.Remove(size);
