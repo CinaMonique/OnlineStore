@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using OnlineStore.Models;
 using OnlineStore.Models.Product;
+using OnlineStore.Reusorces;
 using OnlineStore.ViewModels.ProductCategories;
 
 namespace OnlineStore.Controllers
@@ -39,7 +40,7 @@ namespace OnlineStore.Controllers
         // POST: ProductCategories/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CategoryId,CategoryName")] ProductCategoryViewModel productCategoryViewModel)
+        public ActionResult Create([Bind(Include = "CategoryName")] ProductCategoryViewModel productCategoryViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -57,12 +58,12 @@ namespace OnlineStore.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CategoryIdDoesNotExist);
             }
             ProductCategory productCategory = db.ProductCategories.Find(id);
             if (productCategory == null)
             {
-                return HttpNotFound();
+                return HttpNotFound(ErrorMessage.CategoryDoesNotExist);
             }
             ProductCategoryViewModel productCategoryViewModel = new ProductCategoryViewModel(productCategory);
 
@@ -89,12 +90,12 @@ namespace OnlineStore.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CategoryIdDoesNotExist);
             }
             ProductCategory productCategory = db.ProductCategories.Find(id);
             if (productCategory == null)
             {
-                return HttpNotFound();
+                return HttpNotFound(ErrorMessage.CategoryDoesNotExist);
             }
             ProductCategoryViewModel productCategoryViewModel = new ProductCategoryViewModel(productCategory);
 
@@ -107,6 +108,10 @@ namespace OnlineStore.Controllers
         public ActionResult DeleteConfirmed(long id)
         {
             ProductCategory productCategory = db.ProductCategories.Find(id);
+            if (productCategory == null)
+            {
+                return HttpNotFound(ErrorMessage.CategoryDoesNotExist);
+            }
             db.ProductCategories.Remove(productCategory);
             db.SaveChanges();
             return RedirectToAction("Index");
