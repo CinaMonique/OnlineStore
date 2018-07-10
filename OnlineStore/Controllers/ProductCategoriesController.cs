@@ -44,6 +44,12 @@ namespace OnlineStore.Controllers
         {
             if (ModelState.IsValid)
             {
+                List<ProductCategory> productCategories = db.ProductCategories.ToList();
+                if (productCategories.Exists(x => String.Equals(x.CategoryName, productCategoryViewModel.CategoryName, StringComparison.OrdinalIgnoreCase)))
+                {
+                    ModelState.AddModelError("CategoryName", "Wpisana kategoria już istnieje");
+                    return View(productCategoryViewModel);
+                }
                 ProductCategory productCategory = productCategoryViewModel.UpdateToDomainModel();
                 db.ProductCategories.Add(productCategory);
                 db.SaveChanges();
@@ -77,6 +83,12 @@ namespace OnlineStore.Controllers
         {
             if (ModelState.IsValid)
             {
+                List<ProductCategory> productCategories = db.ProductCategories.ToList();
+                if (productCategories.Exists(x => String.Equals(x.CategoryName, productCategoryViewModel.CategoryName, StringComparison.OrdinalIgnoreCase)))
+                {
+                    ModelState.AddModelError("CategoryName", "Wpisana kategoria już istnieje");
+                    return View(productCategoryViewModel);
+                }
                 ProductCategory productCategory = productCategoryViewModel.UpdateToDomainModel();
                 db.Entry(productCategory).State = EntityState.Modified;
                 db.SaveChanges();
