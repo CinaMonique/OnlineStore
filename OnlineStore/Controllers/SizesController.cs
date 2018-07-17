@@ -31,7 +31,7 @@ namespace OnlineStore.Controllers
             {
                 return HttpNotFound(ErrorMessage.CategoryDoesNotExist);
             }
-            var sizes = db.Sizes.Where(s => s.CategoryId == categoryId).Include(s => s.ProductCategory);
+            var sizes = db.Sizes.Where(s => s.CategoryId == categoryId);
             ViewBag.CategoryName = category.CategoryName;
             List<SizeViewModel> sizesViewModels = new List<SizeViewModel>();
             foreach (Size size in sizes)
@@ -56,14 +56,18 @@ namespace OnlineStore.Controllers
         }
 
         // GET: Sizes/Create/5
-        public ActionResult Create(long categoryId)
+        public ActionResult Create(long? categoryId)
         {
+            if (categoryId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.NoCategoryParameterProvided);
+            }
             int categoryCount = db.ProductCategories.Count(c => c.CategoryId == categoryId);
             if (categoryCount == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CategoryDoesNotExist);
             }
-            Size size = new Size() {CategoryId = categoryId};
+            Size size = new Size() {CategoryId = categoryId.Value};
             SizeViewModel sizeViewModel = new SizeViewModel(size);
             return View(sizeViewModel);
         }

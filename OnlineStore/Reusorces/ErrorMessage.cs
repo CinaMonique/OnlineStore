@@ -13,6 +13,8 @@ namespace OnlineStore.Reusorces
 
         public const string CategoryDoesNotExist = "Choosen category does not exist";
 
+        public const string NoCategoryParameterProvided = "No category id parameter provided";
+
         public const string SizeIdDoesNotExist = "Choosen size id does not exist";
 
         public const string SizeDoesNotExist = "Choosen size does not exist";
