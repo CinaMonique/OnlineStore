@@ -9,24 +9,34 @@
 <p>
     @Html.ActionLink("Dodaj nową kategorię", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CategoryName)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CategoryName)
-        </td>
-        <td>
-            @Html.ActionLink("Edytuj", "Edit", new { id=item.CategoryId }) |
-            @Html.ActionLink("Usuń", "Delete", new { id=item.CategoryId })
-        </td>
-    </tr>
+@if (!Model.Any())
+{
+    <p>Nie dodano żadnych kategorii</p>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edytuj", "Edit", new { id = item.CategoryId }) |
+                    @Html.ActionLink("Usuń", "Delete", new { id = item.CategoryId })
+                </td>
+            </tr>
+        }
+
+    </table>
 }
 
-</table>

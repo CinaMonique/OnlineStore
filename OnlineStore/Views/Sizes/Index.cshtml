@@ -10,27 +10,35 @@
     @Html.ActionLink("Dodaj nowy rozmiar", "Create", new { categoryId = ViewBag.CategoryId })
 </p>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.SizeName)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+@if (!Model.Any())
+{
+    <p>Nie dodano żadnych rozmiarów</p>
+}
+else
+{
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SizeName)
-            </td>
-            <td>
-                @Html.ActionLink("Usuń", "Delete", new { id = item.SizeId })
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.SizeName)
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SizeName)
+                </td>
+                <td>
+                    @Html.ActionLink("Usuń", "Delete", new { id = item.SizeId })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
 
 <div>
     @Html.ActionLink("Wróć do listy kategorii", "Index")
