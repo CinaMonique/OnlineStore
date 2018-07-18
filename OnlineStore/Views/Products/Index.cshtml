@@ -1,27 +1,21 @@
-﻿@model IEnumerable<OnlineStore.Models.Product.Product>
+﻿@model IEnumerable<OnlineStore.ViewModels.Products.ProductBriefViewModel>
 
 @{
     ViewBag.Title = "Lista produktów";
 }
 
-<h2>Lista produktów</h2>
+<h2>Lista produktów dla kategorii: @ViewBag.CategoryName</h2>
 
 <p>
-    @Html.ActionLink("Dodaj nowy produkt    ", "Create")
+    @Html.ActionLink("Dodaj nowy produkt", "Create", new {categoryId = ViewBag.CategoryId })
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ProductCategory.CategoryName)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.ProductName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ProductDescription)
         </th>
         <th></th>
     </tr>
@@ -29,16 +23,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.ProductCategory.CategoryName)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.ProductName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProductDescription)
         </td>
         <td>
             @Html.ActionLink("Edytuj", "Edit", new { id=item.ProductId }) |

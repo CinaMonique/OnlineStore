@@ -8,6 +8,10 @@ using System.Web;
 using System.Web.Mvc;
 using OnlineStore.Models;
 using OnlineStore.Models.Product;
+using OnlineStore.Reusorces;
+using OnlineStore.ViewModels.ProductCategories;
+using OnlineStore.ViewModels.Products;
+using OnlineStore.ViewModels.ProductsDetails;
 
 namespace OnlineStore.Controllers
 {
@@ -16,10 +20,40 @@ namespace OnlineStore.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Products
-        public ActionResult Index()
+        public ActionResult Index(long? categoryId)
         {
-            var products = db.Products.Include(p => p.ProductCategory);
-            return View(products.ToList());
+            if (categoryId == null)
+            {
+               return ShowCategories();
+            }
+            ViewBag.CategoryId = categoryId;
+            ProductCategory category = db.ProductCategories.Find(categoryId);
+            if (category == null)
+            {
+                return HttpNotFound(ErrorMessage.CategoryDoesNotExist);
+            }
+            var products = db.Products.Where(p => p.CategoryId == categoryId).Include(p => p.ProductCategory);
+            ViewBag.CategoryName = category.CategoryName;
+            List<ProductBriefViewModel> productsViewModels = new List<ProductBriefViewModel>();
+            foreach (Product product in products)
+            {
+                ProductBriefViewModel productViewModel = new ProductBriefViewModel(product);
+                productsViewModels.Add(productViewModel);
+            }
+            return View(productsViewModels);
+        }
+
+        private ActionResult ShowCategories()
+        {
+            List<ProductCategory> productCategories = db.ProductCategories.ToList();
+            List<ProductCategoryViewModel> categoriesViewModel = new List<ProductCategoryViewModel>();
+            foreach (ProductCategory category in productCategories)
+            {
+                ProductCategoryViewModel productCategoryViewModel = new ProductCategoryViewModel(category);
+                categoriesViewModel.Add(productCategoryViewModel);
+            }
+            ViewBag.Message = "Wybierz konkretną kategorię, aby zobaczyć produkty";
+            return View("ShowCategories", categoriesViewModel);
         }
 
         // GET: Products/Details/5
@@ -38,37 +72,47 @@ namespace OnlineStore.Controllers
         }
 
         // GET: Products/Create
-        public ActionResult Create()
-        {
-            ViewBag.CategoryId = new SelectList(db.ProductCategories, "CategoryId", "CategoryName");
-            return View();
-        }
-
-        [HttpGet]
-        public ActionResult LoadSizes(long? categoryId)
+        public ActionResult Create(long? categoryId)
         {
             if (categoryId == null)
             {
-                return HttpNotFound("Ni ma rozmairów");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.NoCategoryParameterProvided);
             }
-            var sizes = db.Sizes.Where(s => s.CategoryId == categoryId).ToList();
-            return PartialView("_ShowSizesPartial", sizes);
+            int categoryCount = db.ProductCategories.Count(c => c.CategoryId == categoryId);
+            if (categoryCount == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CategoryDoesNotExist);
+            }
+            ViewBag.CategoryId = categoryId;
+            List<Size> sizes = db.Sizes.Where(s => s.CategoryId == categoryId).ToList();
+            if (!sizes.Any())
+            {
+                return View("LackOfSizes");
+            }
+            Product product = new Product() { CategoryId = categoryId.Value };
+            ProductViewModel productViewModel = new ProductViewModel(product, sizes);
+            return View(productViewModel);
         }
 
         // POST: Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProductId,CategoryId,ProductName,Price,ProductDescription")] Product product)
+        public ActionResult Create([Bind(Include = "CategoryId,ProductName,Price,ProductDescription, ProductDetailsListViewModel")] ProductViewModel productViewModel)
         {
+            int categoryCount = db.ProductCategories.Count(c => c.CategoryId == productViewModel.CategoryId);
+            if (categoryCount == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CategoryDoesNotExist);
+            }
             if (ModelState.IsValid)
             {
+                Product product = productViewModel.UpdateToDomainModel();
                 db.Products.Add(product);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { categoryId = product.CategoryId } );
             }
 
-            ViewBag.CategoryId = new SelectList(db.ProductCategories, "CategoryId", "CategoryName", product.CategoryId);
-            return View(product);
+            return View(productViewModel);
         }
 
         // GET: Products/Edit/5
@@ -83,7 +127,6 @@ namespace OnlineStore.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CategoryId = new SelectList(db.ProductCategories, "CategoryId", "CategoryName", product.CategoryId);
             return View(product);
         }
 
@@ -92,13 +135,12 @@ namespace OnlineStore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ProductId,CategoryId,ProductName,Price,ProductDescription")] Product product)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) //Uwaga na foreach i indeksy
             {
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CategoryId = new SelectList(db.ProductCategories, "CategoryId", "CategoryName", product.CategoryId);
             return View(product);
         }
 
