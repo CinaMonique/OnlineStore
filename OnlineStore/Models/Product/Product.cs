@@ -28,7 +28,7 @@ namespace OnlineStore.Models.Product
          
         public virtual ProductCategory ProductCategory { get; set; }
         public virtual ICollection<Photos> ProductPhotos { get; set; }
-        public virtual ICollection<Size> ProductSize { get; set; }
+        public virtual ICollection<ProductDetails> ProductDetailsList { get; set; }
         //public virtual ICollection<CartItem> Items { get; set; }
     }
 }
