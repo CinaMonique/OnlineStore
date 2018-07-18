@@ -26,13 +26,13 @@ namespace OnlineStore.Controllers
                 return ShowCategories();
             }
             ViewBag.CategoryId = categoryId;
-            ProductCategory category = db.ProductCategories.Find(categoryId);
-            if (category == null)
+            string categoryName = db.ProductCategories.Where(c => c.CategoryId == categoryId).Select(c => c.CategoryName).First();
+            if (categoryName == null)
             {
                 return HttpNotFound(ErrorMessage.CategoryDoesNotExist);
             }
             var sizes = db.Sizes.Where(s => s.CategoryId == categoryId);
-            ViewBag.CategoryName = category.CategoryName;
+            ViewBag.CategoryName = categoryName;
             List<SizeViewModel> sizesViewModels = new List<SizeViewModel>();
             foreach (Size size in sizes)
             {
@@ -62,11 +62,12 @@ namespace OnlineStore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.NoCategoryParameterProvided);
             }
-            int categoryCount = db.ProductCategories.Count(c => c.CategoryId == categoryId);
-            if (categoryCount == 0)
+            string categoryName = db.ProductCategories.Where(c => c.CategoryId == categoryId).Select(c => c.CategoryName).First();
+            if (categoryName == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CategoryDoesNotExist);
+                return HttpNotFound(ErrorMessage.CategoryDoesNotExist);
             }
+            ViewBag.CategoryName = categoryName;
             Size size = new Size() {CategoryId = categoryId.Value};
             SizeViewModel sizeViewModel = new SizeViewModel(size);
             return View(sizeViewModel);
@@ -77,11 +78,12 @@ namespace OnlineStore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "CategoryId,SizeName")] SizeViewModel sizeViewModel)
         {
-            int categoryCount = db.ProductCategories.Count(c => c.CategoryId == sizeViewModel.CategoryId);
-            if (categoryCount == 0)
+            string categoryName = db.ProductCategories.Where(c => c.CategoryId == sizeViewModel.CategoryId).Select(c => c.CategoryName).First();
+            if (categoryName == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CategoryDoesNotExist);
+                return HttpNotFound(ErrorMessage.CategoryDoesNotExist);
             }
+            ViewBag.CategoryName = categoryName;
             if (ModelState.IsValid)
             {
                 List<Size> sizes = db.Sizes.Where(s => s.CategoryId == sizeViewModel.CategoryId).ToList();
@@ -112,8 +114,12 @@ namespace OnlineStore.Controllers
             {
                 return HttpNotFound(ErrorMessage.SizeDoesNotExist);
             }
-            ProductCategory category = db.ProductCategories.Find(size.CategoryId);
-            ViewBag.CategoryName = category.CategoryName;
+            string categoryName = db.ProductCategories.Where(c => c.CategoryId == size.CategoryId).Select(c => c.CategoryName).First();
+            if (categoryName == null)
+            {
+                return HttpNotFound(ErrorMessage.CategoryDoesNotExist);
+            }
+            ViewBag.CategoryName = categoryName;
             SizeViewModel sizeViewModel = new SizeViewModel(size);
             return View(sizeViewModel);
         }

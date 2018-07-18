@@ -4,7 +4,7 @@
     ViewBag.Title = "Dodaj rozmiar";
 }
 
-<h2>Dodaj rozmiar</h2>
+<h2>Dodaj rozmiar dla kategorii: @ViewBag.CategoryName</h2>
 
 @Html.HiddenFor(model => model.CategoryId)
 @using (Html.BeginForm()) 
