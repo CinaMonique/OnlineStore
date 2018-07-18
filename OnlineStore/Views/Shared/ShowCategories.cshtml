@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<OnlineStore.ViewModels.ProductCategories.ProductCategoryViewModel>
 
 @{
-    ViewBag.Title = "Kategorie produktów dla rozmiarów";
+    ViewBag.Title = "Kategorie produktów";
 }
 
-<h2>Kategorie produktów dla rozmiarów</h2>
-<h3>Wybierz odpowiednią kategorię</h3>
+<h2>Kategorie produktów</h2>
+<h3>@ViewBag.Message</h3>
 
 @foreach (var item in Model)
 {

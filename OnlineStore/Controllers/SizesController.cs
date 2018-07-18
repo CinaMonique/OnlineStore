@@ -51,7 +51,7 @@ namespace OnlineStore.Controllers
                 ProductCategoryViewModel productCategoryViewModel = new ProductCategoryViewModel(category);
                 categoriesViewModel.Add(productCategoryViewModel);
             }
-
+            ViewBag.Message = "Wybierz konkretną kategorię, aby zobaczyć rozmiary";
             return View("ShowCategories", categoriesViewModel);
         }
 
