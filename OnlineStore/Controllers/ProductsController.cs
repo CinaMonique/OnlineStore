@@ -46,13 +46,18 @@ namespace OnlineStore.Controllers
         private ActionResult ShowCategories()
         {
             List<ProductCategory> productCategories = db.ProductCategories.ToList();
+            if (!productCategories.Any())
+            {
+                ViewBag.DefineCategory = "Proszę zdefiniować co najmniej jedną kategorię, aby móc dodać produkty";
+                return View("LackOfCategories");
+            }
             List<ProductCategoryViewModel> categoriesViewModel = new List<ProductCategoryViewModel>();
             foreach (ProductCategory category in productCategories)
             {
                 ProductCategoryViewModel productCategoryViewModel = new ProductCategoryViewModel(category);
                 categoriesViewModel.Add(productCategoryViewModel);
             }
-            ViewBag.Message = "Wybierz konkretną kategorię, aby zobaczyć produkty";
+            ViewBag.ChooseCategory = "Wybierz konkretną kategorię, aby zobaczyć produkty";
             return View("ShowCategories", categoriesViewModel);
         }
 
