@@ -215,13 +215,16 @@
     <Compile Include="Models\Product\Photos.cs" />
     <Compile Include="Models\Product\Product.cs" />
     <Compile Include="Models\Product\ProductCategory.cs" />
+    <Compile Include="Models\Product\ProductDetails.cs" />
     <Compile Include="Models\Product\Size.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reusorces\ErrorMessage.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ProductCategories\ProductCategoryViewModel.cs" />
+    <Compile Include="ViewModels\ProductsDetails\ProductDetailsViewModel.cs" />
     <Compile Include="ViewModels\ProductSizes\SizeViewModel.cs" />
     <Compile Include="ViewModels\Products\ProductViewModel.cs" />
+    <Compile Include="ViewModels\Products\ProductBriefViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -287,13 +290,13 @@
     <Content Include="Views\Sizes\Create.cshtml" />
     <Content Include="Views\Sizes\Delete.cshtml" />
     <Content Include="Views\Sizes\Index.cshtml" />
-    <Content Include="Views\Sizes\ShowCategories.cshtml" />
+    <Content Include="Views\Shared\ShowCategories.cshtml" />
     <Content Include="Views\Products\Create.cshtml" />
     <Content Include="Views\Products\Delete.cshtml" />
     <Content Include="Views\Products\Details.cshtml" />
     <Content Include="Views\Products\Edit.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
-    <Content Include="Views\Products\_ShowSizesPartial.cshtml" />
+    <Content Include="Views\Products\LackOfSizes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
