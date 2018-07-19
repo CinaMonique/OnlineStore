@@ -155,14 +155,15 @@ namespace OnlineStore.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdDoesNotExist);
             }
             Product product = db.Products.Find(id);
             if (product == null)
             {
-                return HttpNotFound();
+                return HttpNotFound(ErrorMessage.ProductDoesNotExist);
             }
-            return View(product);
+            ProductBriefViewModel productViewModel = new ProductBriefViewModel(product);
+            return View(productViewModel);
         }
 
         // POST: Products/Delete/5
@@ -171,9 +172,14 @@ namespace OnlineStore.Controllers
         public ActionResult DeleteConfirmed(long id)
         {
             Product product = db.Products.Find(id);
+            if (product == null)
+            {
+                return HttpNotFound(ErrorMessage.ProductDoesNotExist);
+            }
+            long categoryIdFromProduct = product.CategoryId;
             db.Products.Remove(product);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new {categoryId = categoryIdFromProduct});
         }
 
         protected override void Dispose(bool disposing)

@@ -1,4 +1,4 @@
-﻿@model OnlineStore.Models.Product.Product
+﻿@model OnlineStore.ViewModels.Products.ProductBriefViewModel
 
 @{
     ViewBag.Title = "Usuń produkt";
@@ -11,14 +11,6 @@
     <h4>Produkt</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductCategory.CategoryName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProductCategory.CategoryName)
-        </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.ProductName)
         </dt>
@@ -35,14 +27,6 @@
             @Html.DisplayFor(model => model.Price)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ProductDescription)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProductDescription)
-        </dd>
-
     </dl>
 
     @using (Html.BeginForm()) {
@@ -50,7 +34,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Usuń" class="btn btn-default" /> |
-            @Html.ActionLink("Wróć do listy produktów", "Index")
+            @Html.ActionLink("Wróć do listy produktów", "Index", new {categoryId = Model.CategoryId})
         </div>
     }
 </div>
