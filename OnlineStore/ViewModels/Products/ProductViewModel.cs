@@ -20,6 +20,9 @@ namespace OnlineStore.ViewModels.Products
         [DisplayName("Kategoria")]
         public long CategoryId { get; set; }
 
+        [DisplayName("Nazwa kategorii")]
+        public string CategoryName { get; set; }
+
         [Required(ErrorMessage = "Podaj nazwę produktu")]
         [MinLength(6, ErrorMessage = "Nazwa produktu nie może być krótsza niż 6 znaków")]
         [MaxLength(50, ErrorMessage = "Nazwa produktu nie może być dłuższa niż 50 znaków")]
@@ -41,15 +44,16 @@ namespace OnlineStore.ViewModels.Products
         //public ICollection<Photos> ProductPhotos { get; set; } //na ViewModel
 
 
-        public ProductViewModel(Product product, List<ProductDetails> productsDetails)
+        public ProductViewModel(Product product)
         {
             this.ProductId = product.ProductId;
             this.CategoryId = product.CategoryId;
+            this.CategoryName = product.ProductCategory.CategoryName;
             this.ProductName = product.ProductName;
             this.Price = product.Price;
             this.ProductDescription = product.ProductDescription;
-            this.ProductDetailsListViewModel =
-                productsDetails.Select(productDetails => new ProductDetailsViewModel(productDetails)).ToList();
+            this.ProductDetailsListViewModel = product.ProductDetailsList
+                .Select(productDetails => new ProductDetailsViewModel(productDetails)).ToList();
             //this.ProductPhotos = product.ProductPhotos;
         }
 

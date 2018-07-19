@@ -18,5 +18,9 @@ namespace OnlineStore.Reusorces
         public const string SizeIdDoesNotExist = "Choosen size id does not exist";
 
         public const string SizeDoesNotExist = "Choosen size does not exist";
+
+        public const string ProductIdDoesNotExist = "Choosen product id does not exist";
+
+        public const string ProductDoesNotExist = "Choosen product does not exist";
     }
 }

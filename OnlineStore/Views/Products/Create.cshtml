@@ -34,7 +34,7 @@
                             @Html.HiddenFor(modelItem => modelItem.ProductDetailsListViewModel[i].SizeName)
                         </td>
                         <td>
-                            @Html.EditorFor(modelItem => modelItem.ProductDetailsListViewModel[i].Amount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(modelItem => modelItem.ProductDetailsListViewModel[i].Amount, new { htmlAttributes = new { @class = "form-control", min = "0" } })
                             @Html.ValidationMessageFor(modelItem => modelItem.ProductDetailsListViewModel[i].Amount, "", new { @class = "text-danger" })
                         </td>
                     </tr>

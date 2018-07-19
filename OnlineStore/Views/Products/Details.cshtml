@@ -1,4 +1,4 @@
-﻿@model OnlineStore.Models.Product.Product
+﻿@model OnlineStore.ViewModels.Products.ProductViewModel
 
 @{
     ViewBag.Title = "Szczegóły produktu";
@@ -11,11 +11,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.ProductCategory.CategoryName)
+            @Html.DisplayNameFor(model => model.CategoryName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ProductCategory.CategoryName)
+            @Html.DisplayFor(model => model.CategoryName)
         </dd>
 
         <dt>
@@ -39,12 +39,42 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ProductDescription)
+            <textarea disabled="disabled">
+                 @Html.DisplayFor(model => model.ProductDescription)
+            </textarea>
         </dd>
+
+        <dd>
+            Rozmiary:
+        </dd>
+
+        <table>
+            @foreach (var item in Model.ProductDetailsListViewModel)
+            {
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.SizeName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.Amount)
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SizeName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                </tr>
+
+            }
+        </table>
 
     </dl>
 </div>
 <p>
     @Html.ActionLink("Edytuj", "Edit", new { id = Model.ProductId }) |
-    @Html.ActionLink("Wróć do listy produktów", "Index")
+    @Html.ActionLink("Wróć do listy produktów", "Index", new { categoryId = Model.CategoryId })
 </p>

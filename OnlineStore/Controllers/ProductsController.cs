@@ -66,14 +66,15 @@ namespace OnlineStore.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdDoesNotExist);
             }
             Product product = db.Products.Find(id);
             if (product == null)
             {
-                return HttpNotFound();
+                return HttpNotFound(ErrorMessage.ProductDoesNotExist);
             }
-            return View(product);
+            ProductViewModel productViewModel = new ProductViewModel(product);
+            return View(productViewModel);
         }
 
         // GET: Products/Create
