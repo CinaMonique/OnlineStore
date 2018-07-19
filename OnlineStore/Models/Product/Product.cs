@@ -21,6 +21,7 @@ namespace OnlineStore.Models.Product
 
         [Required]
         [DataType(DataType.Currency)]
+        [Range(0, Double.MaxValue)]
         public decimal Price { get; set; }
 
         [MaxLength(500)]

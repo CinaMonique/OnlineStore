@@ -32,6 +32,7 @@ namespace OnlineStore.ViewModels.Products
 
         [Required(ErrorMessage = "Podaj cenę produktu")]
         [DataType(DataType.Currency)]
+        [Range(0, Double.MaxValue, ErrorMessage = "Proszę wpisać poprawną cenę")]
         [DisplayName("Cena")]
         public decimal Price { get; set; }
 

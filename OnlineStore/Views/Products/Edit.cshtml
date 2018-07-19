@@ -1,4 +1,4 @@
-﻿@model OnlineStore.Models.Product.Product
+﻿@model OnlineStore.ViewModels.Products.ProductViewModel
 
 @{
     ViewBag.Title = "Edytuj produkt";
@@ -6,24 +6,16 @@
 
 <h2>Edytuj produkt</h2>
 
-
 @using (Html.BeginForm())
 {
+    @Html.HiddenFor(model => model.CategoryId)
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Produkt</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ProductId)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CategoryId, "CategoryId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -49,6 +41,35 @@
             </div>
         </div>
 
+        <div>
+            <table>
+                <tr> 
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductDetailsListViewModel.First().SizeName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductDetailsListViewModel.First().Amount)
+                    </th>
+                </tr>
+                @for (int i = 0; i < Model.ProductDetailsListViewModel.Count(); i++)
+                {
+                    @Html.HiddenFor(modelItem => modelItem.ProductDetailsListViewModel[i].ProductId)
+                    @Html.HiddenFor(modelItem => modelItem.ProductDetailsListViewModel[i].ProductDetailsId)
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.ProductDetailsListViewModel[i].SizeName)
+                            @Html.HiddenFor(modelItem => modelItem.ProductDetailsListViewModel[i].SizeName)
+                        </td>
+                        <td>
+                            @Html.EditorFor(modelItem => modelItem.ProductDetailsListViewModel[i].Amount, new { htmlAttributes = new { @class = "form-control", min = "0" } })
+                            @Html.ValidationMessageFor(modelItem => modelItem.ProductDetailsListViewModel[i].Amount, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Zapisz" class="btn btn-default" />
@@ -58,7 +79,7 @@
 }
 
 <div>
-    @Html.ActionLink("Wróć do listy produktów", "Index")
+    @Html.ActionLink("Wróć do listy produktów", "Index", new { categoryId = Model.CategoryId })
 </div>
 
 @section Scripts {

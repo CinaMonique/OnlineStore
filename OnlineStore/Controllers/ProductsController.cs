@@ -24,7 +24,7 @@ namespace OnlineStore.Controllers
         {
             if (categoryId == null)
             {
-               return ShowCategories();
+                return ShowCategories();
             }
             ViewBag.CategoryId = categoryId;
             ProductCategory category = db.ProductCategories.Find(categoryId);
@@ -103,7 +103,7 @@ namespace OnlineStore.Controllers
         // POST: Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CategoryId,ProductName,Price,ProductDescription, ProductDetailsListViewModel")] ProductViewModel productViewModel)
+        public ActionResult Create([Bind(Include = "CategoryId,ProductName,Price,ProductDescription,ProductDetailsListViewModel")] ProductViewModel productViewModel)
         {
             int categoryCount = db.ProductCategories.Count(c => c.CategoryId == productViewModel.CategoryId);
             if (categoryCount == 0)
@@ -115,9 +115,8 @@ namespace OnlineStore.Controllers
                 Product product = productViewModel.UpdateToDomainModel();
                 db.Products.Add(product);
                 db.SaveChanges();
-                return RedirectToAction("Index", new { categoryId = product.CategoryId } );
+                return RedirectToAction("Index", new { categoryId = product.CategoryId });
             }
-
             return View(productViewModel);
         }
 
@@ -126,28 +125,39 @@ namespace OnlineStore.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdDoesNotExist);
             }
             Product product = db.Products.Find(id);
             if (product == null)
             {
-                return HttpNotFound();
+                return HttpNotFound(ErrorMessage.ProductDoesNotExist);
             }
-            return View(product);
+            ProductViewModel productViewModel = new ProductViewModel(product);
+            return View(productViewModel);
         }
 
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductId,CategoryId,ProductName,Price,ProductDescription")] Product product)
+        public ActionResult Edit([Bind(Include = "ProductId,CategoryId,ProductName,Price,ProductDescription, ProductDetailsListViewModel")] ProductViewModel productViewModel)
         {
-            if (ModelState.IsValid) //Uwaga na foreach i indeksy
+            int categoryCount = db.ProductCategories.Count(c => c.CategoryId == productViewModel.CategoryId);
+            if (categoryCount == 0)
             {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CategoryDoesNotExist);
+            }
+            if (ModelState.IsValid)
+            {
+                Product product = productViewModel.UpdateToDomainModel();
+                foreach (ProductDetails details in product.ProductDetailsList)
+                {
+                    db.Entry(details).State = EntityState.Modified;
+                }
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { categoryId = product.CategoryId });
             }
-            return View(product);
+            return View(productViewModel);
         }
 
         // GET: Products/Delete/5
@@ -179,7 +189,7 @@ namespace OnlineStore.Controllers
             long categoryIdFromProduct = product.CategoryId;
             db.Products.Remove(product);
             db.SaveChanges();
-            return RedirectToAction("Index", new {categoryId = categoryIdFromProduct});
+            return RedirectToAction("Index", new { categoryId = categoryIdFromProduct });
         }
 
         protected override void Dispose(bool disposing)
