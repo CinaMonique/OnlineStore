@@ -121,8 +121,7 @@ namespace OnlineStore.Controllers
                         ModelState.AddModelError("ProductPhotos", validationError);
                         return View(productViewModel);
                     }
-                    Product product = productViewModel.UpdateToDomainModel();
-                    product.ProductPhotos = new List<Photos>();
+                    Product product = productViewModel.CreateProduct();
                     foreach (HttpPostedFileBase photo in upload)
                     {
                         string photoNameWithTimeStamp = AppendTimeStamp(photo.FileName);
@@ -183,7 +182,7 @@ namespace OnlineStore.Controllers
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductId,CategoryId,ProductName,Price,ProductDescription, ProductDetailsListViewModel")] ProductViewModel productViewModel, IEnumerable<HttpPostedFileBase> upload)
+        public ActionResult Edit([Bind(Include = "ProductId,CategoryId,ProductName,Price,ProductDescription,ProductDetailsListViewModel")] ProductViewModel productViewModel, IEnumerable<HttpPostedFileBase> upload)
         {
             int categoryCount = db.ProductCategories.Count(c => c.CategoryId == productViewModel.CategoryId);
             if (categoryCount == 0)
@@ -197,6 +196,7 @@ namespace OnlineStore.Controllers
                 {
                     return HttpNotFound(ErrorMessage.ProductDoesNotExist);
                 }
+
                 if (upload != null && upload.Any(u => u != null && u.ContentLength > 0))
                 {
                     string validationError = ValidatePhotoUpload(upload);
@@ -211,19 +211,20 @@ namespace OnlineStore.Controllers
                         db.Entry(photo).State = EntityState.Deleted;
                     }
                     db.SaveChanges();
+                    product.ProductPhotos = new List<Photos>();
+                    foreach (HttpPostedFileBase photo in upload)
+                    {
+                        string photoNameWithTimeStamp = AppendTimeStamp(photo.FileName);
+                        string path = Path.Combine(Server.MapPath("~/Images"), photoNameWithTimeStamp);
+                        photo.SaveAs(path);
+                        product.ProductPhotos.Add(new Photos(photoNameWithTimeStamp));
+                    }
                 }
-                product = productViewModel.UpdateToDomainModel();
+
+                productViewModel.UpdateProduct(product); 
                 foreach (ProductDetails details in product.ProductDetailsList)
                 {
                     db.Entry(details).State = EntityState.Modified;
-                }
-                product.ProductPhotos = new List<Photos>();
-                foreach (HttpPostedFileBase photo in upload)
-                {
-                    string photoNameWithTimeStamp = AppendTimeStamp(photo.FileName);
-                    string path = Path.Combine(Server.MapPath("~/Images"), photoNameWithTimeStamp);
-                    photo.SaveAs(path);
-                    product.ProductPhotos.Add(new Photos(photoNameWithTimeStamp));
                 }
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();

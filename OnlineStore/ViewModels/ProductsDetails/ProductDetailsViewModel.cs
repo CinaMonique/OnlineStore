@@ -43,15 +43,18 @@ namespace OnlineStore.ViewModels.ProductsDetails
         // MVC requires public constructor
         public ProductDetailsViewModel() { }
 
-        public ProductDetails UpdateToDomainModel()
+        public ProductDetails CreateProductDetails()
         {
             return new ProductDetails
             {
-                ProductDetailsId = this.ProductDetailsId,
-                ProductId =  this.ProductId,
                 SizeName = this.SizeName,
                 Amount = this.Amount
             };
+        }
+
+        public void UpdateProductDetails(ProductDetails productDetails)
+        {
+            productDetails.Amount = this.Amount;
         }
     }
 }

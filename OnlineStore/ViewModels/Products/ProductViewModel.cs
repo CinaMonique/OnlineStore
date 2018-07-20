@@ -42,7 +42,7 @@ namespace OnlineStore.ViewModels.Products
         public string ProductDescription { get; set; }
 
         public List<ProductDetailsViewModel> ProductDetailsListViewModel { get; set; }
-        public List<string> ProductPhotos { get; set; } 
+        public List<string> ProductPhotos { get; set; }
 
 
         public ProductViewModel(Product product)
@@ -70,20 +70,31 @@ namespace OnlineStore.ViewModels.Products
         }
 
         // MVC requires public constructor
-        public ProductViewModel () { }
+        public ProductViewModel() { }
 
-        public Product UpdateToDomainModel()
+        public Product CreateProduct()
         {
             return new Product()
             {
-                ProductId = this.ProductId,
                 CategoryId = this.CategoryId,
                 ProductName = this.ProductName,
                 Price = this.Price,
                 ProductDescription = this.ProductDescription,
-                ProductDetailsList = 
-                    this.ProductDetailsListViewModel.Select(productDetailsVM => productDetailsVM.UpdateToDomainModel()).ToList()
+                ProductDetailsList =
+                    this.ProductDetailsListViewModel.Select(productDetailsVM => productDetailsVM.CreateProductDetails()).ToList(),
+                ProductPhotos = new List<Photos>()
             };
+        }
+
+        public void UpdateProduct(Product product)
+        {
+            product.ProductName = this.ProductName;
+            product.Price = this.Price;
+            product.ProductDescription = this.ProductDescription;
+            for (var i = 0; i < this.ProductDetailsListViewModel.Count; i++)
+            {
+                this.ProductDetailsListViewModel[i].UpdateProductDetails(product.ProductDetailsList.ElementAt(i));
+            }
         }
     }
 }
