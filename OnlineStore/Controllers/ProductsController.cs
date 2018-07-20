@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -103,7 +104,7 @@ namespace OnlineStore.Controllers
         // POST: Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CategoryId,ProductName,Price,ProductDescription,ProductDetailsListViewModel")] ProductViewModel productViewModel)
+        public ActionResult Create([Bind(Include = "CategoryId,ProductName,Price,ProductDescription,ProductDetailsListViewModel")] ProductViewModel productViewModel, IEnumerable<HttpPostedFileBase> upload)
         {
             int categoryCount = db.ProductCategories.Count(c => c.CategoryId == productViewModel.CategoryId);
             if (categoryCount == 0)
@@ -112,12 +113,55 @@ namespace OnlineStore.Controllers
             }
             if (ModelState.IsValid)
             {
-                Product product = productViewModel.UpdateToDomainModel();
-                db.Products.Add(product);
-                db.SaveChanges();
-                return RedirectToAction("Index", new { categoryId = product.CategoryId });
+                if (upload != null && upload.Any(u => u != null && u.ContentLength > 0))
+                {
+                    string validationError = ValidatePhotoUpload(upload);
+                    if (validationError != null)
+                    {
+                        ModelState.AddModelError("ProductPhotos", validationError);
+                        return View(productViewModel);
+                    }
+                    Product product = productViewModel.UpdateToDomainModel();
+                    product.ProductPhotos = new List<Photos>();
+                    foreach (HttpPostedFileBase photo in upload)
+                    {
+                        string photoNameWithTimeStamp = AppendTimeStamp(photo.FileName);
+                        string path = Path.Combine(Server.MapPath("~/Images"), photoNameWithTimeStamp);
+                        photo.SaveAs(path);
+                        product.ProductPhotos.Add(new Photos(photoNameWithTimeStamp));
+                    }
+                    db.Products.Add(product);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", new { categoryId = product.CategoryId });
+                }
+                ModelState.AddModelError("ProductPhotos", "Produkt musi zawierać co najmniej jedno zdjęcie");
             }
             return View(productViewModel);
+        }
+
+        private static string ValidatePhotoUpload(IEnumerable<HttpPostedFileBase> upload)
+        {
+            if (upload.Count() > 5)
+            {
+                return "Nie można dodać więcej niż 5 zdjęć";
+            }
+            foreach (HttpPostedFileBase photo in upload)
+            {
+                if (photo.ContentLength > 6500000)
+                {
+                    return "Zdjęcie nie może być większe niż 6MB";
+                }
+            }
+            return null;
+        }
+
+        private static string AppendTimeStamp(string fileName)
+        {
+            return string.Concat(
+                Path.GetFileNameWithoutExtension(fileName),
+                DateTime.Now.ToString("yyyyMMddHHmmssfff"),
+                Path.GetExtension(fileName)
+                );
         }
 
         // GET: Products/Edit/5
@@ -127,7 +171,7 @@ namespace OnlineStore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdDoesNotExist);
             }
-            Product product = db.Products.Find(id);
+            Product product = db.Products.Include(p => p.ProductPhotos).SingleOrDefault(p => p.ProductId == id);
             if (product == null)
             {
                 return HttpNotFound(ErrorMessage.ProductDoesNotExist);
@@ -139,7 +183,7 @@ namespace OnlineStore.Controllers
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductId,CategoryId,ProductName,Price,ProductDescription, ProductDetailsListViewModel")] ProductViewModel productViewModel)
+        public ActionResult Edit([Bind(Include = "ProductId,CategoryId,ProductName,Price,ProductDescription, ProductDetailsListViewModel")] ProductViewModel productViewModel, IEnumerable<HttpPostedFileBase> upload)
         {
             int categoryCount = db.ProductCategories.Count(c => c.CategoryId == productViewModel.CategoryId);
             if (categoryCount == 0)
@@ -148,16 +192,53 @@ namespace OnlineStore.Controllers
             }
             if (ModelState.IsValid)
             {
-                Product product = productViewModel.UpdateToDomainModel();
+                Product product = db.Products.Include(p => p.ProductPhotos).SingleOrDefault(p => p.ProductId == productViewModel.ProductId);
+                if (product == null)
+                {
+                    return HttpNotFound(ErrorMessage.ProductDoesNotExist);
+                }
+                if (upload != null && upload.Any(u => u != null && u.ContentLength > 0))
+                {
+                    string validationError = ValidatePhotoUpload(upload);
+                    if (validationError != null)
+                    {
+                        ModelState.AddModelError("ProductPhotos", validationError);
+                        return View(productViewModel); 
+                    }
+                    DeleteAllPhotosFromFolder(product);
+                    foreach (var photo in product.ProductPhotos.ToList())
+                    {
+                        db.Entry(photo).State = EntityState.Deleted;
+                    }
+                    db.SaveChanges();
+                }
+                product = productViewModel.UpdateToDomainModel();
                 foreach (ProductDetails details in product.ProductDetailsList)
                 {
                     db.Entry(details).State = EntityState.Modified;
+                }
+                product.ProductPhotos = new List<Photos>();
+                foreach (HttpPostedFileBase photo in upload)
+                {
+                    string photoNameWithTimeStamp = AppendTimeStamp(photo.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images"), photoNameWithTimeStamp);
+                    photo.SaveAs(path);
+                    product.ProductPhotos.Add(new Photos(photoNameWithTimeStamp));
                 }
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index", new { categoryId = product.CategoryId });
             }
             return View(productViewModel);
+        }
+
+        private void DeleteAllPhotosFromFolder(Product product)
+        {
+            foreach (Photos photo in product.ProductPhotos)
+            {
+                string path = Path.Combine(Server.MapPath("~/Images"), photo.PhotoName);
+                System.IO.File.Delete(path);
+            }
         }
 
         // GET: Products/Delete/5
@@ -181,11 +262,12 @@ namespace OnlineStore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Product product = db.Products.Find(id);
+            Product product = db.Products.Include(p => p.ProductPhotos).SingleOrDefault(p => p.ProductId == id);
             if (product == null)
             {
                 return HttpNotFound(ErrorMessage.ProductDoesNotExist);
             }
+            DeleteAllPhotosFromFolder(product);
             long categoryIdFromProduct = product.CategoryId;
             db.Products.Remove(product);
             db.SaveChanges();

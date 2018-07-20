@@ -42,7 +42,7 @@ namespace OnlineStore.ViewModels.Products
         public string ProductDescription { get; set; }
 
         public List<ProductDetailsViewModel> ProductDetailsListViewModel { get; set; }
-        //public ICollection<Photos> ProductPhotos { get; set; } //na ViewModel
+        public List<string> ProductPhotos { get; set; } 
 
 
         public ProductViewModel(Product product)
@@ -55,7 +55,7 @@ namespace OnlineStore.ViewModels.Products
             this.ProductDescription = product.ProductDescription;
             this.ProductDetailsListViewModel = product.ProductDetailsList
                 .Select(productDetails => new ProductDetailsViewModel(productDetails)).ToList();
-            //this.ProductPhotos = product.ProductPhotos;
+            this.ProductPhotos = product.ProductPhotos.Select(productPhoto => productPhoto.PhotoName).ToList();
         }
 
         public ProductViewModel(Product product, List<Size> sizes)
@@ -67,7 +67,6 @@ namespace OnlineStore.ViewModels.Products
             this.ProductDescription = product.ProductDescription;
             this.ProductDetailsListViewModel =
                 sizes.Select(size => new ProductDetailsViewModel(size)).ToList();
-            //this.ProductPhotos = product.ProductPhotos;
         }
 
         // MVC requires public constructor
@@ -84,7 +83,6 @@ namespace OnlineStore.ViewModels.Products
                 ProductDescription = this.ProductDescription,
                 ProductDetailsList = 
                     this.ProductDetailsListViewModel.Select(productDetailsVM => productDetailsVM.UpdateToDomainModel()).ToList()
-                //ProductPhotos = this.ProductPhotos,
             };
         }
     }
