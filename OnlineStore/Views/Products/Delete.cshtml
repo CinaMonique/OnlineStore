@@ -27,14 +27,32 @@
             @Html.DisplayFor(model => model.Price)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.PhotoPath)
+        </dt>
+
+        @if (File.Exists(Path.Combine(Server.MapPath("~/Images"), Model.PhotoPath)))
+        {
+            <dd>
+                <img src="~/Images/@Url.Content(Model.PhotoPath)" alt="Zdjęcie główne" class="small-photo" />
+            </dd>
+        }
+        else
+        {
+            <dd>
+                Brak zdjęcia
+            </dd>
+        }
+
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
             <input type="submit" value="Usuń" class="btn btn-default" /> |
-            @Html.ActionLink("Wróć do listy produktów", "Index", new {categoryId = Model.CategoryId})
+            @Html.ActionLink("Wróć do listy produktów", "Index", new { categoryId = Model.CategoryId })
         </div>
     }
 </div>

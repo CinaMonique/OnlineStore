@@ -33,7 +33,7 @@ namespace OnlineStore.Controllers
             {
                 return HttpNotFound(ErrorMessage.CategoryDoesNotExist);
             }
-            var products = db.Products.Where(p => p.CategoryId == categoryId).Include(p => p.ProductCategory);
+            var products = db.Products.Where(p => p.CategoryId == categoryId).Include(p => p.ProductCategory).Include(p => p.ProductPhotos);
             ViewBag.CategoryName = category.CategoryName;
             List<ProductBriefViewModel> productsViewModels = new List<ProductBriefViewModel>();
             foreach (Product product in products)
@@ -69,7 +69,7 @@ namespace OnlineStore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdDoesNotExist);
             }
-            Product product = db.Products.Find(id);
+            Product product = db.Products.Include(p => p.ProductPhotos).SingleOrDefault(p => p.ProductId == id);
             if (product == null)
             {
                 return HttpNotFound(ErrorMessage.ProductDoesNotExist);
@@ -249,7 +249,7 @@ namespace OnlineStore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdDoesNotExist);
             }
-            Product product = db.Products.Find(id);
+            Product product = db.Products.Include(p => p.ProductPhotos).SingleOrDefault(p => p.ProductId == id);
             if (product == null)
             {
                 return HttpNotFound(ErrorMessage.ProductDoesNotExist);

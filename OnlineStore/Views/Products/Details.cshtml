@@ -14,7 +14,7 @@
             @Html.DisplayNameFor(model => model.CategoryName)
         </dt>
 
-        <dd>
+        <dd class="description-item">
             @Html.DisplayFor(model => model.CategoryName)
         </dd>
 
@@ -22,7 +22,7 @@
             @Html.DisplayNameFor(model => model.ProductName)
         </dt>
 
-        <dd>
+        <dd class="description-item">
             @Html.DisplayFor(model => model.ProductName)
         </dd>
 
@@ -30,7 +30,7 @@
             @Html.DisplayNameFor(model => model.Price)
         </dt>
 
-        <dd>
+        <dd class="description-item">
             @Html.DisplayFor(model => model.Price)
         </dd>
 
@@ -38,40 +38,67 @@
             @Html.DisplayNameFor(model => model.ProductDescription)
         </dt>
 
-        <dd>
-            <textarea disabled="disabled">
+        <dd class="description-item">
+            <textarea class="form-control" disabled="disabled">
                  @Html.DisplayFor(model => model.ProductDescription)
             </textarea>
         </dd>
 
-        <dd>
-            Rozmiary:
+        <dt>
+            Rozmiary
+        </dt>
+
+        <dd class="description-item">
+            <table class="table sizes-table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductDetailsListViewModel.First().SizeName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductDetailsListViewModel.First().Amount)
+                    </th>
+                </tr>
+                @foreach (var item in Model.ProductDetailsListViewModel)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SizeName)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                    </tr>
+
+                }
+            </table>
         </dd>
 
-        <table>
-            @foreach (var item in Model.ProductDetailsListViewModel)
+        <dt>
+            Dodane zdjęcia
+        </dt>
+
+        <dd class="photos-in-details">
+
+            @if (Model.ProductPhotos != null)
             {
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(modelItem => item.SizeName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(modelItem => item.Amount)
-                    </th>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SizeName)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Amount)
-                    </td>
-                </tr>
-
+                foreach (string photo in Model.ProductPhotos)
+                {
+                    if (File.Exists(Path.Combine(Server.MapPath("~/Images"), photo)))
+                    {
+                        <img src="~/Images/@Url.Content(photo)" alt="Zdjęcie produktu" class="small-photo" />
+                    }
+                    else
+                    {
+                        @:Brak zdjęcia
+                    }
+                }
             }
-        </table>
-
+            else
+            {
+                @:Brak zdjęć
+            }
+        </dd>
     </dl>
 </div>
 <p>

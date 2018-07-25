@@ -18,6 +18,7 @@ else
 {
     <table class="table">
         <tr>
+            <th>Zdjęcie produktu</th>
             <th>
                 @Html.DisplayNameFor(model => model.ProductName)
             </th>
@@ -30,6 +31,18 @@ else
         @foreach (var item in Model)
         {
             <tr>
+                @if (File.Exists(Path.Combine(Server.MapPath("~/Images"), item.PhotoPath)))
+                {
+                    <td>
+                        <img src="~/Images/@Url.Content(item.PhotoPath)" alt="Zdjęcie główne" class="product-photo-admin" />
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        Brak zdjęcia
+                    </td>
+                }
                 <td>
                     @Html.DisplayFor(modelItem => item.ProductName)
                 </td>

@@ -1,0 +1,28 @@
+﻿.product-photo-admin {
+  width: 150px;
+  height: 200px;
+}
+
+.photos-in-details {
+  width: 100%;
+  height: 100%;
+}
+
+.small-photo {
+  width: 250px;
+  display: inline-block;
+  white-space: nowrap;
+  margin: 5px 5px 5px 5px;
+}
+
+.sizes-table {
+  max-width: 280px;
+}
+
+.description-item {
+  margin: 10px 0px 10px 0px;
+}
+
+.merge-sizes-table {
+  width: 280px;
+}
