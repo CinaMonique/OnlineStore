@@ -55,13 +55,8 @@ namespace OnlineStore.ViewModels.Products
 
         public ProductViewModel(Product product)
         {
-            this.ProductId = product.ProductId;
-            this.CategoryId = product.CategoryId;
+            AssignProduct(product);
             this.CategoryName = product.ProductCategory.CategoryName;
-            this.ProductName = product.ProductName;
-            this.ProductCode = product.ProductCode;
-            this.Price = product.Price;
-            this.ProductDescription = product.ProductDescription;
             this.ProductDetailsListViewModel = product.ProductDetailsList
                 .Select(productDetails => new ProductDetailsViewModel(productDetails)).ToList();
             this.ProductPhotos = product.ProductPhotos.Select(productPhoto => productPhoto.PhotoName).ToList();
@@ -69,18 +64,24 @@ namespace OnlineStore.ViewModels.Products
 
         public ProductViewModel(Product product, List<Size> sizes)
         {
-            this.ProductId = product.ProductId;
-            this.CategoryId = product.CategoryId;
-            this.ProductName = product.ProductName;
-            this.ProductCode = product.ProductCode;
-            this.Price = product.Price;
-            this.ProductDescription = product.ProductDescription;
+            AssignProduct(product);
             this.ProductDetailsListViewModel =
                 sizes.Select(size => new ProductDetailsViewModel(size)).ToList();
         }
 
         // MVC requires public constructor
         public ProductViewModel() { }
+
+
+        private void AssignProduct(Product product)
+        {
+            this.ProductId = product.ProductId;
+            this.CategoryId = product.CategoryId;
+            this.ProductName = product.ProductName;
+            this.ProductCode = product.ProductCode;
+            this.Price = product.Price;
+            this.ProductDescription = product.ProductDescription;
+        }
 
         public Product CreateProduct()
         {
