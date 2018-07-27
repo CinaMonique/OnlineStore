@@ -1,0 +1,66 @@
+﻿@model OnlineStore.ViewModels.Products.ProductBriefViewModel
+
+@{
+    ViewBag.Title = "Usuń produkt";
+}
+
+<h2>Usuń produkt</h2>
+
+<h3>Czy na pewno chcesz usunąć wybrany produkt?</h3>
+<div>
+    <h4>Produkt</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductName)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhotoPath)
+        </dt>
+
+        @if (File.Exists(Path.Combine(Server.MapPath("~/Images"), Model.PhotoPath)))
+        {
+            <dd>
+                <img src="~/Images/@Url.Content(Model.PhotoPath)" alt="Zdjęcie główne" class="small-photo" />
+            </dd>
+        }
+        else
+        {
+            <dd>
+                Brak zdjęcia
+            </dd>
+        }
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Usuń" class="btn btn-default" /> |
+            @Html.ActionLink("Wróć do listy produktów", "Index", new { categoryId = Model.CategoryId })
+        </div>
+    }
+</div>

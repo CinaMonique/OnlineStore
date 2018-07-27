@@ -6,6 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/Scripts/jquery-3.3.1.min.js")
 
 </head>
 <body>
@@ -21,9 +22,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Produkty-admin", "Index", "Products")</li>
+                    @*TODO: Delete this after creating roles*@
+                    <li>@Html.ActionLink("Produkty-user", "UserProductList", "Products")</li>
+                    <li>@Html.ActionLink("Kategorie produktów", "Index", "ProductCategories")</li>
+                    <li>@Html.ActionLink("Rozmiary", "Index", "Sizes")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

@@ -1,0 +1,32 @@
+﻿@model OnlineStore.ViewModels.ProductCategories.ProductCategoryViewModel
+
+@{
+    ViewBag.Title = "Usuń kategorię";
+}
+
+<h2>Usuń kategorię</h2>
+
+<h3>Czy na pewno chcesz usunąć wybraną kategorię produktów?</h3>
+<div>
+    <h4>Kategoria produktów</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CategoryName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Usuń" class="btn btn-default" /> |
+            @Html.ActionLink("Wróć do listy kategorii", "Index")
+        </div>
+    }
+</div>

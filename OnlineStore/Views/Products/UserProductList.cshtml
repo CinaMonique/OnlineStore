@@ -1,0 +1,37 @@
+﻿@model IEnumerable<OnlineStore.ViewModels.Products.ProductBriefViewModel>
+
+
+@{
+    ViewBag.Title = "Lista produktów";
+}
+
+<h2>Lista produktów</h2>
+
+<hr />
+
+<div class="products-wrapper">
+    @foreach (var item in Model)
+    {
+        <div class="product-wrapper">
+            @if (File.Exists(Path.Combine(Server.MapPath("~/Images"), item.PhotoPath)))
+            {
+                <a href="@Url.Action("UserDetails", "Products", new {id = item.ProductId})">
+                    <img src="~/Images/@Url.Content(item.PhotoPath)" alt="Zdjęcie produktu" class="product-photo-user" />
+                </a>
+            }
+            else
+            {
+                <p>
+                    Tymczasowy brak zdjęcia
+                </p>
+            }
+
+            <div class="product-name-on-list">
+                @Html.ActionLink(item.ProductName, "UserDetails", "Products", new { id = item.ProductId }, htmlAttributes: new { @class = "product-view-link" })
+            </div>
+            <div>
+                @Html.DisplayFor(modelItem => item.Price)
+            </div>
+        </div>
+    }
+</div>

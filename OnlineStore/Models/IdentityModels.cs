@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using OnlineStore.Models.Product;
 
 namespace OnlineStore.Models
 {
@@ -29,5 +30,11 @@ namespace OnlineStore.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<ProductCategory> ProductCategories { get; set; }
+
+        public System.Data.Entity.DbSet<Size> Sizes { get; set; }
+
+        public System.Data.Entity.DbSet<Product.Product> Products { get; set; }
     }
 }

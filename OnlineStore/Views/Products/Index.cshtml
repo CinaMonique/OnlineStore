@@ -1,0 +1,71 @@
+﻿@model IEnumerable<OnlineStore.ViewModels.Products.ProductBriefViewModel>
+
+@{
+    ViewBag.Title = "Lista produktów";
+}
+
+<h2>Lista produktów dla kategorii: @ViewBag.CategoryName</h2>
+
+<p>
+    @Html.ActionLink("Dodaj nowy produkt", "Create", new { categoryId = ViewBag.CategoryId })
+</p>
+
+@if (!Model.Any())
+{
+    <p>Nie dodano żadnych produktów</p>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>Zdjęcie produktu</th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (File.Exists(Path.Combine(Server.MapPath("~/Images"), item.PhotoPath)))
+                {
+                    <td>
+                        <img src="~/Images/@Url.Content(item.PhotoPath)" alt="Zdjęcie główne" class="product-photo-admin" />
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        Brak zdjęcia
+                    </td>
+                }
+                <td>
+                    @Html.ActionLink(item.ProductName, "UserDetails", "Products", new {id = item.ProductId}, null)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.ActionLink("Edytuj", "Edit", new { id = item.ProductId }) |
+                    @Html.ActionLink("Szczegóły", "Details", new { id = item.ProductId }) |
+                    @Html.ActionLink("Usuń", "Delete", new { id = item.ProductId })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+<div>
+    @Html.ActionLink("Wróć do listy kategorii", "Index")
+</div>  

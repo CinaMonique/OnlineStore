@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "Brak rozmiarów";
+}
+
+
+<h2>Nie zdefiniowano żadnych rozmiarów dla wybranej kategorii</h2>
+
+<p>
+    @Html.ActionLink("Dodaj nowy rozmiar", "Create", "Sizes", new { categoryId = ViewBag.CategoryId }, null)
+</p>
+
+<p>Proszę dodać odpowiednie rozmiary lub w przypadku braku rozróżenia na rozmiary zdefioniować jeden główny np. "uniwersalny" </p>
+

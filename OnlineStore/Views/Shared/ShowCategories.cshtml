@@ -1,0 +1,16 @@
+﻿@model IEnumerable<OnlineStore.ViewModels.ProductCategories.ProductCategoryViewModel>
+
+@{
+    ViewBag.Title = "Kategorie produktów";
+}
+
+<h2>Kategorie produktów</h2>
+<h3>@ViewBag.ChooseCategory</h3>
+
+@foreach (var item in Model)
+{
+    <p>
+        @Html.ActionLink(item.CategoryName, "Index", new { categoryId = item.CategoryId })
+    </p>
+
+}
