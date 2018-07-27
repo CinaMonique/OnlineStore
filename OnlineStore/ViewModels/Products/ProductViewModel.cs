@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using Microsoft.Ajax.Utilities;
+using OnlineStore.Helpers;
 using OnlineStore.Models.Product;
 using OnlineStore.Reusorces;
 using OnlineStore.ViewModels.ProductsDetails;
@@ -38,7 +39,7 @@ namespace OnlineStore.ViewModels.Products
 
         [Required(ErrorMessage = "Podaj cenę produktu")]
         [DataType(DataType.Currency)]
-        [Range(0, Double.MaxValue, ErrorMessage = "Proszę wpisać poprawną cenę")]
+        [PriceRange(0d, 100000d)]
         [DisplayName("Cena")]
         public decimal Price { get; set; }
 

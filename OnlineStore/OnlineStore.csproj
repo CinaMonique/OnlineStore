@@ -206,6 +206,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\PriceRangeAttribute.cs" />
     <Compile Include="Migrations\201806272119513_InitialCreate.cs" />
     <Compile Include="Migrations\201806272119513_InitialCreate.Designer.cs">
       <DependentUpon>201806272119513_InitialCreate.cs</DependentUpon>
