@@ -23,6 +23,9 @@ else
                 @Html.DisplayNameFor(model => model.ProductName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.ProductCode)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th></th>
@@ -44,7 +47,10 @@ else
                     </td>
                 }
                 <td>
-                    @Html.DisplayFor(modelItem => item.ProductName)
+                    @Html.ActionLink(item.ProductName, "UserDetails", "Products", new {id = item.ProductId}, null)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCode)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)

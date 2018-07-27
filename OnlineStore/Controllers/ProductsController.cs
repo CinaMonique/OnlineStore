@@ -133,7 +133,7 @@ namespace OnlineStore.Controllers
         // POST: Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CategoryId,ProductName,Price,ProductDescription,ProductDetailsListViewModel")] ProductViewModel productViewModel, IEnumerable<HttpPostedFileBase> upload)
+        public ActionResult Create([Bind(Include = "CategoryId,ProductName,ProductCode,Price,ProductDescription,ProductDetailsListViewModel")] ProductViewModel productViewModel, IEnumerable<HttpPostedFileBase> upload)
         {
             int categoryCount = db.ProductCategories.Count(c => c.CategoryId == productViewModel.CategoryId);
             if (categoryCount == 0)
@@ -211,7 +211,7 @@ namespace OnlineStore.Controllers
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductId,CategoryId,ProductName,Price,ProductDescription,ProductDetailsListViewModel")] ProductViewModel productViewModel, IEnumerable<HttpPostedFileBase> upload)
+        public ActionResult Edit([Bind(Include = "ProductId,CategoryId,ProductName,ProductCode,Price,ProductDescription,ProductDetailsListViewModel")] ProductViewModel productViewModel, IEnumerable<HttpPostedFileBase> upload)
         {
             int categoryCount = db.ProductCategories.Count(c => c.CategoryId == productViewModel.CategoryId);
             if (categoryCount == 0)

@@ -20,6 +20,9 @@ namespace OnlineStore.ViewModels.Products
         [DisplayName("Nazwa produktu")]
         public string ProductName { get; set; }
 
+        [DisplayName("Kod produktu")]
+        public string ProductCode { get; set; }
+
         [DataType(DataType.Currency)]
         [DisplayName("Cena")]
         public decimal Price { get; set; }
@@ -31,7 +34,8 @@ namespace OnlineStore.ViewModels.Products
             this.CategoryId = product.CategoryId;
             this.PhotoPath = product.ProductPhotos.First().PhotoName;
             this.ProductName = product.ProductName;
-             this.Price = product.Price;
+            this.ProductCode = product.ProductCode;
+            this.Price = product.Price;
         }
 
         // MVC requires public constructor

@@ -107,9 +107,13 @@ a.product-name-on-list {
   display: block;
 }
 
+#product-form-right {
+  width: 50%;
+}
+
 .product-name {
   margin-top: 20px;
-  font-size: 25px;
+  font-size: 30px;
   font-weight: 600;
   letter-spacing: 1px;
   color: darkgray;
@@ -117,7 +121,7 @@ a.product-name-on-list {
 
 .product-price {
   margin-top: 29px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   text-align: right;
   letter-spacing: 1px;
@@ -202,4 +206,9 @@ a.product-name-on-list {
 
 .check-size {
   letter-spacing: 1px;
+}
+
+.product-code {
+  letter-spacing: 1px;
+  font-size: 12px;
 }

@@ -20,10 +20,17 @@ namespace OnlineStore.Models.Product
         public string ProductName { get; set; }
 
         [Required]
+        [MinLength(3)]
+        [MaxLength(15)]
+        public string ProductCode { get; set; }
+
+        [Required]
         [DataType(DataType.Currency)]
         [Range(0, Double.MaxValue)]
         public decimal Price { get; set; }
 
+        [Required]
+        [MinLength(15)]
         [MaxLength(500)]
         public string ProductDescription { get; set; }
          

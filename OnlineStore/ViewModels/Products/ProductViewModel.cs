@@ -30,12 +30,20 @@ namespace OnlineStore.ViewModels.Products
         [DisplayName("Nazwa produktu")]
         public string ProductName { get; set; }
 
+        [Required(ErrorMessage = "Podaj kod produktu")]
+        [MinLength(3, ErrorMessage = "Kod produktu nie może być krótszy niż 3 znaki")]
+        [MaxLength(15, ErrorMessage = "Kod produktu nie może być dłuższy niż 13 znaków")]
+        [DisplayName("Kod produktu")]
+        public string ProductCode { get; set; }
+
         [Required(ErrorMessage = "Podaj cenę produktu")]
         [DataType(DataType.Currency)]
         [Range(0, Double.MaxValue, ErrorMessage = "Proszę wpisać poprawną cenę")]
         [DisplayName("Cena")]
         public decimal Price { get; set; }
 
+        [Required(ErrorMessage = "Dodaj opis produktu")]
+        [MinLength(15, ErrorMessage = "Opis produktu nie może być krótszy niż 40 znaków")]
         [MaxLength(500, ErrorMessage = "Opis produktu nie może być dłuższy niż 500 znaków")]
         [DataType(DataType.MultilineText)]
         [DisplayName("Opis")]
@@ -51,6 +59,7 @@ namespace OnlineStore.ViewModels.Products
             this.CategoryId = product.CategoryId;
             this.CategoryName = product.ProductCategory.CategoryName;
             this.ProductName = product.ProductName;
+            this.ProductCode = product.ProductCode;
             this.Price = product.Price;
             this.ProductDescription = product.ProductDescription;
             this.ProductDetailsListViewModel = product.ProductDetailsList
@@ -63,6 +72,7 @@ namespace OnlineStore.ViewModels.Products
             this.ProductId = product.ProductId;
             this.CategoryId = product.CategoryId;
             this.ProductName = product.ProductName;
+            this.ProductCode = product.ProductCode;
             this.Price = product.Price;
             this.ProductDescription = product.ProductDescription;
             this.ProductDetailsListViewModel =
@@ -78,6 +88,7 @@ namespace OnlineStore.ViewModels.Products
             {
                 CategoryId = this.CategoryId,
                 ProductName = this.ProductName,
+                ProductCode = this.ProductCode,
                 Price = this.Price,
                 ProductDescription = this.ProductDescription,
                 ProductDetailsList =
@@ -89,6 +100,7 @@ namespace OnlineStore.ViewModels.Products
         public void UpdateProduct(Product product)
         {
             product.ProductName = this.ProductName;
+            product.ProductCode = this.ProductCode;
             product.Price = this.Price;
             product.ProductDescription = this.ProductDescription;
             for (var i = 0; i < this.ProductDetailsListViewModel.Count; i++)
