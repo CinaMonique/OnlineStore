@@ -20,6 +20,19 @@ namespace OnlineStore.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        //TODO: Delete this after creating roles
+        public ActionResult UserProductList(long? categoryId)
+        {
+            var products = db.Products.Include(p => p.ProductPhotos);
+            List<ProductBriefViewModel> productsViewModels = new List<ProductBriefViewModel>();
+            foreach (Product product in products)
+            {
+                ProductBriefViewModel productViewModel = new ProductBriefViewModel(product);
+                productsViewModels.Add(productViewModel);
+            }
+            return View("UserProductList",productsViewModels);
+        }
+
         // GET: Products
         public ActionResult Index(long? categoryId)
         {
@@ -60,6 +73,22 @@ namespace OnlineStore.Controllers
             }
             ViewBag.ChooseCategory = "Wybierz konkretną kategorię, aby zobaczyć produkty";
             return View("ShowCategories", categoriesViewModel);
+        }
+
+        //TODO: Delete this after creating roles
+        public ActionResult UserDetails(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdDoesNotExist);
+            }
+            Product product = db.Products.Include(p => p.ProductPhotos).SingleOrDefault(p => p.ProductId == id);
+            if (product == null)
+            {
+                return HttpNotFound(ErrorMessage.ProductDoesNotExist);
+            }
+            ProductViewModel productViewModel = new ProductViewModel(product);
+            return View(productViewModel);
         }
 
         // GET: Products/Details/5

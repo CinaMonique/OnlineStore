@@ -1,0 +1,127 @@
+﻿@model OnlineStore.ViewModels.Products.ProductViewModel
+
+@{
+    ViewBag.Title = Model.ProductName;
+}
+
+<div class="main container">
+    <div id="product-container">
+        <div id="product-form-container">
+            <div id="product-form-center">
+                <div>
+                    <div id="product-images">
+                        <div id="product-image-tiles">
+                            @if (Model.ProductPhotos != null)
+                            {
+                                foreach (string photo in Model.ProductPhotos)
+                                {
+                                    if (File.Exists(Path.Combine(Server.MapPath("~/Images"), photo)))
+                                    {
+                                        <div class="image">
+                                            <img src="~/Images/@Url.Content(photo)" alt="Zdjęcie produktu" class="product-photo-user-detaiis" />
+                                        </div>
+
+                                    }
+                                    else
+                                    {
+                                        <p>
+                                            Tymczasowy brak zdjęcia
+                                        </p>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <p>
+                                    Tymczasowy brak zdjęć
+                                </p>
+                            }
+                        </div>
+                        <div id="product-preview">
+                            <img id="product-preview-img" src="~/Content/AppImages/waiting.gif" alt="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="product-form-right">
+                <div class="product-name">
+                    @Html.DisplayFor(model => model.ProductName)
+                </div>
+                <hr />
+                <div class="product-price">
+                    @Html.DisplayFor(model => model.Price)
+                </div>
+                <hr />
+                <div class="product-description">
+                    @Html.DisplayFor(model => model.ProductDescription)
+                </div>
+                <hr />
+                <div class="sizes-in-details">
+                    @if (Model.ProductDetailsListViewModel.Count == 1)
+                    {
+                        @Html.Label(Model.ProductDetailsListViewModel.First().SizeName, new { @class = "label-one-size" })
+                        //TODO: Assign amount of product to cart item
+                    }
+                    else
+                    {
+                        <p class="check-size">Wybierz rozmiar:</p>
+                        foreach (var item in Model.ProductDetailsListViewModel)
+                        {
+                            if (item.Amount == 0)
+                            {
+                                @Html.RadioButton("CheckedSize", item.SizeName, new { @class = "radio-sizes", @id = item.SizeName, disabled = "disabled" })
+                            }
+                            else
+                            {
+                                @Html.RadioButton("CheckedSize", item.SizeName, new { @class = "radio-sizes", @id = item.SizeName })
+                            }
+                            @Html.Label(item.SizeName, new { @class = "label-sizes" })
+                        }
+                    }
+                </div>
+
+                <div>
+                    <button class="btn btn-info" id="add-product-button">
+                        <span class="glyphicon glyphicon-shopping-cart"></span> DODAJ DO KOSZYKA
+                    </button>
+                </div>
+                <div id="product-return-list">
+                    <a href="@Url.Action("UserProductList", "Products", new { id = Model.CategoryId})">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        Wróć do listy produktów
+                    </a>
+                </div>
+                <hr />
+                <p class="benefits"> <span class="glyphicon glyphicon-home benefit-icons"></span> Darmowa dostawa dla zamówień powyżej 150 PLN</p>
+                <p class="benefits"> <span class="glyphicon glyphicon-calendar benefit-icons"></span> 30 dni na zwrot</p>
+                <p class="benefits"> <span class="glyphicon glyphicon-gift benefit-icons"></span> Podaruj jako prezent</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("img.product-photo-user-detaiis").click(function () {
+            changePreviewImage($(this));
+        });
+
+        setFirstImage();
+    });
+
+    function setFirstImage() {
+        changePreviewImage($(".product-photo-user-detaiis:first"));
+    }
+
+    function changePreviewImage(selector) {
+        var src = selector.attr("src");
+        var target = $("#product-preview-img");
+        if (target.attr("src") === src) {
+            return false;
+        }
+        target.fadeTo(300, 0.30, function () {
+            $(this).attr("src", src);
+        }).fadeTo(200, 1);
+    }
+
+</script>

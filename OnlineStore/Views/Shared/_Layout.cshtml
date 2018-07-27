@@ -22,7 +22,9 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Produkty", "Index", "Products")</li>
+                    <li>@Html.ActionLink("Produkty-admin", "Index", "Products")</li>
+                    @*TODO: Delete this after creating roles*@
+                    <li>@Html.ActionLink("Produkty-user", "UserProductList", "Products")</li>
                     <li>@Html.ActionLink("Kategorie produktów", "Index", "ProductCategories")</li>
                     <li>@Html.ActionLink("Rozmiary", "Index", "Sizes")</li>
                 </ul>

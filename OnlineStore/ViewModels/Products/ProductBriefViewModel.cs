@@ -29,7 +29,7 @@ namespace OnlineStore.ViewModels.Products
         {
             this.ProductId = product.ProductId;
             this.CategoryId = product.CategoryId;
-            this.PhotoPath = product.ProductPhotos.FirstOrDefault().PhotoName;
+            this.PhotoPath = product.ProductPhotos.First().PhotoName;
             this.ProductName = product.ProductName;
              this.Price = product.Price;
         }
