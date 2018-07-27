@@ -50,7 +50,7 @@ namespace OnlineStore.Controllers
                     ModelState.AddModelError("CategoryName", "Wpisana kategoria już istnieje");
                     return View(productCategoryViewModel);
                 }
-                ProductCategory productCategory = productCategoryViewModel.UpdateToDomainModel();
+                ProductCategory productCategory = productCategoryViewModel.CreateProductCategory();
                 db.ProductCategories.Add(productCategory);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -89,7 +89,12 @@ namespace OnlineStore.Controllers
                     ModelState.AddModelError("CategoryName", "Wpisana kategoria już istnieje");
                     return View(productCategoryViewModel);
                 }
-                ProductCategory productCategory = productCategoryViewModel.UpdateToDomainModel();
+                ProductCategory productCategory = db.ProductCategories.SingleOrDefault(c => c.CategoryId == productCategoryViewModel.CategoryId);
+                if (productCategory == null)
+                {
+                    return HttpNotFound(ErrorMessage.CategoryDoesNotExist);
+                }
+                productCategoryViewModel.UpdateProductCategory(productCategory);
                 db.Entry(productCategory).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

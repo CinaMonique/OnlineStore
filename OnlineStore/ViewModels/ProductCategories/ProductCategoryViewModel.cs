@@ -29,13 +29,19 @@ namespace OnlineStore.ViewModels.ProductCategories
         // MVC requires public constructor
         public ProductCategoryViewModel() { }
 
-        public ProductCategory UpdateToDomainModel()
+
+        public ProductCategory CreateProductCategory()
         {
             return new ProductCategory()
             {
                 CategoryId = this.CategoryId,
                 CategoryName = this.CategoryName
             };
+        }
+
+        public void UpdateProductCategory(ProductCategory productCategory)
+        {
+            productCategory.CategoryName = CategoryName;
         }
     }
 }

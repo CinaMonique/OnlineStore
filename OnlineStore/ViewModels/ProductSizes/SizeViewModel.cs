@@ -33,7 +33,8 @@ namespace OnlineStore.ViewModels.ProductSizes
         // MVC requires public constructor
         public SizeViewModel() { }
 
-        public Size UpdateToDomainModel()
+
+        public Size CreateSize()
         {
             return new Size()
             {

@@ -43,7 +43,7 @@ namespace OnlineStore.ViewModels.Products
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = "Dodaj opis produktu")]
-        [MinLength(15, ErrorMessage = "Opis produktu nie może być krótszy niż 40 znaków")]
+        [MinLength(15, ErrorMessage = "Opis produktu nie może być krótszy niż 15 znaków")]
         [MaxLength(500, ErrorMessage = "Opis produktu nie może być dłuższy niż 500 znaków")]
         [DataType(DataType.MultilineText)]
         [DisplayName("Opis")]

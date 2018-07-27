@@ -97,7 +97,7 @@ namespace OnlineStore.Controllers
                     ModelState.AddModelError("SizeName", "Wpisany rozmiar już istnieje");
                     return View(sizeViewModel);
                 }
-                Size size = sizeViewModel.UpdateToDomainModel();
+                Size size = sizeViewModel.CreateSize();
                 db.Sizes.Add(size);
                 db.SaveChanges();
                 return RedirectToAction("Index", new {categoryId = size.CategoryId});
