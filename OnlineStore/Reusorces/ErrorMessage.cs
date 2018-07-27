@@ -9,17 +9,17 @@ namespace OnlineStore.Reusorces
 {
     public static class ErrorMessage
     {
-        public const string CategoryIdDoesNotExist = "Choosen category id does not exist";
+        public const string CategoryIdNotSpecified = "Category id is not specified";
 
         public const string CategoryDoesNotExist = "Choosen category does not exist";
 
         public const string NoCategoryParameterProvided = "No category id parameter provided";
 
-        public const string SizeIdDoesNotExist = "Choosen size id does not exist";
+        public const string SizeIdNotSpecified = "Size id is not specified";
 
         public const string SizeDoesNotExist = "Choosen size does not exist";
 
-        public const string ProductIdDoesNotExist = "Choosen product id does not exist";
+        public const string ProductIdNotSpecified = "Product id is not specified";
 
         public const string ProductDoesNotExist = "Choosen product does not exist";
     }

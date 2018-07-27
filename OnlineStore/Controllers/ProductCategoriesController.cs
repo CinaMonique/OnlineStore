@@ -64,7 +64,7 @@ namespace OnlineStore.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CategoryIdDoesNotExist);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CategoryIdNotSpecified);
             }
             ProductCategory productCategory = db.ProductCategories.Find(id);
             if (productCategory == null)
@@ -102,7 +102,7 @@ namespace OnlineStore.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CategoryIdDoesNotExist);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CategoryIdNotSpecified);
             }
             ProductCategory productCategory = db.ProductCategories.Find(id);
             if (productCategory == null)

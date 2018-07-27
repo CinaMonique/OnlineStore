@@ -80,7 +80,7 @@ namespace OnlineStore.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdDoesNotExist);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdNotSpecified);
             }
             Product product = db.Products.Include(p => p.ProductPhotos).SingleOrDefault(p => p.ProductId == id);
             if (product == null)
@@ -96,7 +96,7 @@ namespace OnlineStore.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdDoesNotExist);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdNotSpecified);
             }
             Product product = db.Products.Include(p => p.ProductPhotos).SingleOrDefault(p => p.ProductId == id);
             if (product == null)
@@ -197,7 +197,7 @@ namespace OnlineStore.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdDoesNotExist);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdNotSpecified);
             }
             Product product = db.Products.Include(p => p.ProductPhotos).SingleOrDefault(p => p.ProductId == id);
             if (product == null)
@@ -276,7 +276,7 @@ namespace OnlineStore.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdDoesNotExist);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdNotSpecified);
             }
             Product product = db.Products.Include(p => p.ProductPhotos).SingleOrDefault(p => p.ProductId == id);
             if (product == null)

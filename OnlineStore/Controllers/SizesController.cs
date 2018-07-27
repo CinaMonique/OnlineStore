@@ -112,7 +112,7 @@ namespace OnlineStore.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.SizeIdDoesNotExist);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.SizeIdNotSpecified);
             }
             Size size = db.Sizes.Find(id);
             if (size == null)
