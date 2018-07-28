@@ -6,7 +6,7 @@ namespace OnlineStore.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "E-mail")]
         public string Email { get; set; }
     }
 
@@ -29,11 +29,11 @@ namespace OnlineStore.Models
         public string Provider { get; set; }
 
         [Required]
-        [Display(Name = "Code")]
+        [Display(Name = "Kod")]
         public string Code { get; set; }
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Remember this browser?")]
+        [Display(Name = "Pamiętaj mnie?")]
         public bool RememberBrowser { get; set; }
 
         public bool RememberMe { get; set; }
@@ -42,42 +42,53 @@ namespace OnlineStore.Models
     public class ForgotViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "E-mail")]
         public string Email { get; set; }
     }
 
     public class LoginViewModel
     {
-        [Required]
-        [Display(Name = "Email")]
+        [Required(ErrorMessage = "Adres e-mail jest wymagany")]
+        [Display(Name = "E-mail")]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Hasło jest wymagane")]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Pamiętaj mnie?")]
         public bool RememberMe { get; set; }
     }
 
     public class RegisterViewModel
     {
-        [Required]
+        //[Required(ErrorMessage = "Imię jest wymagane")]
+        //[StringLength(50, ErrorMessage = "{0} musi się składać z co najmniej {2} znaków.", MinimumLength = 2)]
+        //[Display(Name = "Imię")]
+        //public string FirstName { get; set; }
+
+        //[Required(ErrorMessage = "Nazwisko jest wymagane")]
+        //[StringLength(50, ErrorMessage = "{0} musi się składać z co najmniej {2} znaków.", MinimumLength = 2)]
+        //[Display(Name = "Nazwisko")]
+        //public string LastName { get; set; }
+
+        [Required(ErrorMessage = "Adres e-mail jest wymagany")]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "E-mail")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "Hasło jest wymagane")]
+        [StringLength(50, ErrorMessage = "{0} musi się składać z co najmniej {2} znaków.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
+        [Required(ErrorMessage = "Musisz potwierdzić hasło")]
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Potwierdź hasło")]
+        [Compare("Password", ErrorMessage = "Podano dwa różne hasła")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -85,18 +96,18 @@ namespace OnlineStore.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "E-mail")]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(50, ErrorMessage = "{0} musi się składać z co najmniej {2} znaków.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Potwierdź hasło")]
+        [Compare("Password", ErrorMessage = "Podano dwa różne hasła")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
@@ -106,7 +117,7 @@ namespace OnlineStore.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "E-mail")]
         public string Email { get; set; }
     }
 }
