@@ -37,3 +37,20 @@
 .merge-sizes-table {
   width: 280px;
 }
+
+.danger-message {
+  color: #cc0000;
+}
+
+.inform-massage {
+  text-align: center;
+  font-size: 25px;
+}
+
+.action-header {
+  color: darkgray;
+}
+
+.action-header span {
+  font-weight: bold;
+}

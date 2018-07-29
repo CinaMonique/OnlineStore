@@ -4,7 +4,7 @@
     ViewBag.Title = "Lista produktów";
 }
 
-<h2>Lista produktów dla kategorii: @ViewBag.CategoryName</h2>
+<h2 class="action-header">Lista produktów dla kategorii: <span>@ViewBag.CategoryName</span></h2>
 
 <p>
     @Html.ActionLink("Dodaj nowy produkt", "Create", new { categoryId = ViewBag.CategoryId })
@@ -12,7 +12,7 @@
 
 @if (!Model.Any())
 {
-    <p>Nie dodano żadnych produktów</p>
+    <p class="inform-massage">Nie dodano żadnych produktów</p>
 }
 else
 {

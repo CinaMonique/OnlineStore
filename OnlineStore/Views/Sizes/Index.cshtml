@@ -4,7 +4,7 @@
     ViewBag.Title = "Lista rozmiarów";
 }
 
-<h2>Lista rozmiarów dla kategorii: @ViewBag.CategoryName </h2>
+<h2 class="action-header">Lista rozmiarów dla kategorii: <span>@ViewBag.CategoryName</span></h2>
 
 <p>
     @Html.ActionLink("Dodaj nowy rozmiar", "Create", new { categoryId = ViewBag.CategoryId })
@@ -12,7 +12,7 @@
 
 @if (!Model.Any())
 {
-    <p>Nie dodano żadnych rozmiarów</p>
+    <p class="inform-massage">Nie dodano żadnych rozmiarów</p>
 }
 else
 {

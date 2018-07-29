@@ -302,3 +302,8 @@ a.product-name-on-list {
   font-family: monospace;
   font-size: 25px;
 }
+
+.list-header {
+  color: darkgray;
+  font-weight: bold;
+}

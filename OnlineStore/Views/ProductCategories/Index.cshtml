@@ -4,7 +4,7 @@
     ViewBag.Title = "Lista kategorii produktów";
 }
 
-<h2>Lista kategorii produktów</h2>
+<h2 class="action-header">Lista kategorii produktów</h2>
 
 <p>
     @Html.ActionLink("Dodaj nową kategorię", "Create")
@@ -12,7 +12,7 @@
 
 @if (!Model.Any())
 {
-    <p>Nie dodano żadnych kategorii</p>
+    <p class="inform-massage">Nie dodano żadnych kategorii</p>
 }
 else
 {
