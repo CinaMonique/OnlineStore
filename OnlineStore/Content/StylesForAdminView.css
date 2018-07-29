@@ -1,4 +1,15 @@
-﻿.product-photo-admin {
+﻿.custom-button {
+  color: white;
+  background-color: #00b8e6;
+  border-color: #00b8e6;
+}
+
+.custom-button:hover {
+  color: white;
+  background-color: #008fb3;
+}
+
+.product-photo-admin {
   width: 80px;
   height: 100px;
 }

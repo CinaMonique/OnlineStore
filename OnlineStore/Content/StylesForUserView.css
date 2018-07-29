@@ -1,13 +1,13 @@
-﻿.btn-default {
+﻿.custom-button {
   color: white;
   background-color: #00b8e6;
   border-color: #00b8e6;
 }
 
-.btn-default:hover {
-  color: white;
-  background-color: #008fb3;
-}
+  .custom-button:hover {
+    color: white;
+    background-color: #00a3cc;
+  }
 
 .products-wrapper {
   min-width: 800px;
@@ -239,23 +239,23 @@ a.product-name-on-list {
   font-size: 70px;
 }
 
-.carousel-caption {
+#carousel-home .carousel-caption {
   height: 100%;
 }
 
-.carousel-indicators .active {
+#carousel-home .carousel-indicators .active {
   background-color: orange;
   border: orange;
 }
 
-.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right {
+#carousel-home .glyphicon-chevron-left, #carousel-home .glyphicon-chevron-right {
   color: orange;
 }
 
 .shop-name {
   text-align: center;
   font-size: 120px;
-  font-family: Agency FB;
+  font-family: monospace;
   letter-spacing: 5px;
   max-height: 130px;
   color: darkgray;
@@ -296,4 +296,9 @@ a.product-name-on-list {
   margin: 10px;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.shop-name-navbar {
+  font-family: monospace;
+  font-size: 25px;
 }
