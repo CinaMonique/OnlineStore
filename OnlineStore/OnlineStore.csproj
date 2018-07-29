@@ -233,10 +233,10 @@
     <Content Include="Content\AppImages\1.jpg" />
     <Content Include="Content\AppImages\2.jpg" />
     <Content Include="Content\AppImages\3.png" />
-    <Content Include="Content\AppImages\kombinezon1.jpg" />
-    <Content Include="Content\AppImages\koszula1.jpg" />
-    <Content Include="Content\AppImages\marynarka1.jpg" />
-    <Content Include="Content\AppImages\spódnica3.jpg" />
+    <Content Include="Content\AppImages\kombinezon.jpg" />
+    <Content Include="Content\AppImages\koszula.jpg" />
+    <Content Include="Content\AppImages\sandały.jpg" />
+    <Content Include="Content\AppImages\spódnica.jpg" />
     <Content Include="Content\AppImages\waiting.gif" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
