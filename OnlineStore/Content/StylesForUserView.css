@@ -1,4 +1,15 @@
-﻿.products-wrapper {
+﻿.btn-default {
+  color: white;
+  background-color: #00b8e6;
+  border-color: #00b8e6;
+}
+
+.btn-default:hover {
+  color: white;
+  background-color: #008fb3;
+}
+
+.products-wrapper {
   min-width: 800px;
   min-height: 600px;
 }
@@ -7,7 +18,6 @@
   text-align: center;
   font-size: 14px;
   font-weight: 500;
-  letter-spacing: 1px;
   width: 24%;
   height: 44%;
   display: inline-block;
@@ -147,6 +157,7 @@ a.product-name-on-list {
 #product-return-list {
   padding-top: 60px;
   letter-spacing: 1px;
+  color: #008fb3;
 }
 
 .benefit-icons {
@@ -211,4 +222,78 @@ a.product-name-on-list {
 .product-code {
   letter-spacing: 1px;
   font-size: 12px;
+}
+
+#carousel-home {
+  margin-top: 70px;
+}
+
+.carousel-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: 25px;
+  text-transform: uppercase;
+  text-shadow: -1px -1px 0 gray, 1px -1px 0 gray, -1px 1px 0 gray, 1px 1px 0 gray;
+  font-size: 70px;
+}
+
+.carousel-caption {
+  height: 100%;
+}
+
+.carousel-indicators .active {
+  background-color: orange;
+  border: orange;
+}
+
+.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right {
+  color: orange;
+}
+
+.shop-name {
+  text-align: center;
+  font-size: 120px;
+  font-family: Agency FB;
+  letter-spacing: 5px;
+  max-height: 130px;
+  color: darkgray;
+}
+
+.shop-slogan {
+  text-align: center;
+  font-size: 25px;
+  font-family: Tahoma;
+  letter-spacing: 5px;
+  color: orange; 
+}
+
+.home-category-header {
+  font-size: 30px;
+  font-weight: 600;
+  font-family: Calibri;
+  letter-spacing: 5px;
+  text-align: center;
+  margin-top: 5%;
+  color: orange;
+}
+
+.category-wrapper {
+  display: flex;
+}
+
+.home-photos {
+  height: 100%;
+  width: 100%;
+  float: left;
+}
+
+.photo-category {
+  float: left;
+  width: 40%;
+  height: 60%;
+  margin: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
