@@ -1,3 +1,6 @@
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+
 namespace OnlineStore.Migrations
 {
     using System;
@@ -15,7 +18,21 @@ namespace OnlineStore.Migrations
 
         protected override void Seed(Models.ApplicationDbContext context)
         {
+            CreateRoles(context);
+        }
 
+        private static void CreateRoles(Models.ApplicationDbContext context)
+        {
+            RoleManager<IdentityRole> roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            string[] roleNames = { "Manager", "Admin", "User" };
+            IdentityResult roleResult;
+            foreach (string roleName in roleNames)
+            {
+                if (!roleManager.RoleExists(roleName))
+                {
+                    roleResult = roleManager.Create(new IdentityRole(roleName));
+                }
+            }
         }
     }
 }
