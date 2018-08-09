@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using OnlineStore.Helpers;
 using OnlineStore.Models;
 using OnlineStore.Models.Product;
 using OnlineStore.Reusorces;
@@ -20,41 +21,42 @@ namespace OnlineStore.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        //TODO: Delete this after creating roles
-        public ActionResult UserProductList(long? categoryId)
-        {
-            var products = db.Products.Include(p => p.ProductPhotos);
-            List<ProductBriefViewModel> productsViewModels = new List<ProductBriefViewModel>();
-            foreach (Product product in products)
-            {
-                ProductBriefViewModel productViewModel = new ProductBriefViewModel(product);
-                productsViewModels.Add(productViewModel);
-            }
-            return View("UserProductList",productsViewModels);
-        }
-
         // GET: Products
         public ActionResult Index(long? categoryId)
         {
-            if (categoryId == null)
+            if (User.IsInRole(RoleNames.Manager) || User.IsInRole(RoleNames.Admin))
             {
-                return ShowCategories();
+                if (categoryId == null)
+                {
+                    return ShowCategories();
+                }
+                ViewBag.CategoryId = categoryId;
+                ProductCategory category = db.ProductCategories.Find(categoryId);
+                if (category == null)
+                {
+                    return HttpNotFound(ErrorMessage.CategoryDoesNotExist);
+                }
+                var products = db.Products.Where(p => p.CategoryId == categoryId).Include(p => p.ProductCategory).Include(p => p.ProductPhotos);
+                ViewBag.CategoryName = category.CategoryName;
+                List<ProductBriefViewModel> productsViewModels = new List<ProductBriefViewModel>();
+                foreach (Product product in products)
+                {
+                    ProductBriefViewModel productViewModel = new ProductBriefViewModel(product);
+                    productsViewModels.Add(productViewModel);
+                }
+                return View(productsViewModels);
             }
-            ViewBag.CategoryId = categoryId;
-            ProductCategory category = db.ProductCategories.Find(categoryId);
-            if (category == null)
+            else
             {
-                return HttpNotFound(ErrorMessage.CategoryDoesNotExist);
+                var products = db.Products.Include(p => p.ProductPhotos);
+                List<ProductBriefViewModel> productsViewModels = new List<ProductBriefViewModel>();
+                foreach (Product product in products)
+                {
+                    ProductBriefViewModel productViewModel = new ProductBriefViewModel(product);
+                    productsViewModels.Add(productViewModel);
+                }
+                return View("UserProductList", productsViewModels);
             }
-            var products = db.Products.Where(p => p.CategoryId == categoryId).Include(p => p.ProductCategory).Include(p => p.ProductPhotos);
-            ViewBag.CategoryName = category.CategoryName;
-            List<ProductBriefViewModel> productsViewModels = new List<ProductBriefViewModel>();
-            foreach (Product product in products)
-            {
-                ProductBriefViewModel productViewModel = new ProductBriefViewModel(product);
-                productsViewModels.Add(productViewModel);
-            }
-            return View(productsViewModels);
         }
 
         private ActionResult ShowCategories()
@@ -75,23 +77,8 @@ namespace OnlineStore.Controllers
             return View("ShowCategories", categoriesViewModel);
         }
 
-        //TODO: Delete this after creating roles
-        public ActionResult UserDetails(long? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.ProductIdNotSpecified);
-            }
-            Product product = db.Products.Include(p => p.ProductPhotos).SingleOrDefault(p => p.ProductId == id);
-            if (product == null)
-            {
-                return HttpNotFound(ErrorMessage.ProductDoesNotExist);
-            }
-            ProductViewModel productViewModel = new ProductViewModel(product);
-            return View(productViewModel);
-        }
-
         // GET: Products/Details/5
+        [AuthorizeRole(Roles = RoleNames.ManagerOrAdmin)]
         public ActionResult Details(long? id)
         {
             if (id == null)
@@ -105,9 +92,28 @@ namespace OnlineStore.Controllers
             }
             ProductViewModel productViewModel = new ProductViewModel(product);
             return View(productViewModel);
+
         }
 
+        // GET: Products/UserDetails/5
+        public ActionResult UserDetails(long? id)
+        {
+            if (id == null)
+            {
+                return View("LackOfProduct");
+            }
+            Product product = db.Products.Include(p => p.ProductPhotos).SingleOrDefault(p => p.ProductId == id);
+            if (product == null)
+            {
+                return View("LackOfProduct");
+            }
+            ProductViewModel productViewModel = new ProductViewModel(product);
+            return View(productViewModel);
+        }
+
+
         // GET: Products/Create
+        [AuthorizeRole(Roles = RoleNames.ManagerOrAdmin)]
         public ActionResult Create(long? categoryId)
         {
             if (categoryId == null)
@@ -133,6 +139,7 @@ namespace OnlineStore.Controllers
         // POST: Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRole(Roles = RoleNames.ManagerOrAdmin)]
         public ActionResult Create([Bind(Include = "CategoryId,ProductName,ProductCode,Price,ProductDescription,ProductDetailsListViewModel")] ProductViewModel productViewModel, IEnumerable<HttpPostedFileBase> upload)
         {
             int categoryCount = db.ProductCategories.Count(c => c.CategoryId == productViewModel.CategoryId);
@@ -193,6 +200,7 @@ namespace OnlineStore.Controllers
         }
 
         // GET: Products/Edit/5
+        [AuthorizeRole(Roles = RoleNames.ManagerOrAdmin)]
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -211,6 +219,7 @@ namespace OnlineStore.Controllers
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRole(Roles = RoleNames.ManagerOrAdmin)]
         public ActionResult Edit([Bind(Include = "ProductId,CategoryId,ProductName,ProductCode,Price,ProductDescription,ProductDetailsListViewModel")] ProductViewModel productViewModel, IEnumerable<HttpPostedFileBase> upload)
         {
             int categoryCount = db.ProductCategories.Count(c => c.CategoryId == productViewModel.CategoryId);
@@ -232,7 +241,7 @@ namespace OnlineStore.Controllers
                     if (validationError != null)
                     {
                         ModelState.AddModelError("ProductPhotos", validationError);
-                        return View(productViewModel); 
+                        return View(productViewModel);
                     }
                     DeleteAllPhotosFromFolder(product);
                     foreach (var photo in product.ProductPhotos.ToList())
@@ -250,7 +259,7 @@ namespace OnlineStore.Controllers
                     }
                 }
 
-                productViewModel.UpdateProduct(product); 
+                productViewModel.UpdateProduct(product);
                 foreach (ProductDetails details in product.ProductDetailsList)
                 {
                     db.Entry(details).State = EntityState.Modified;
@@ -272,6 +281,7 @@ namespace OnlineStore.Controllers
         }
 
         // GET: Products/Delete/5
+        [AuthorizeRole(Roles = RoleNames.ManagerOrAdmin)]
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -290,6 +300,7 @@ namespace OnlineStore.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AuthorizeRole(Roles = RoleNames.ManagerOrAdmin)]
         public ActionResult DeleteConfirmed(long id)
         {
             Product product = db.Products.Include(p => p.ProductPhotos).SingleOrDefault(p => p.ProductId == id);

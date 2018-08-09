@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using OnlineStore.Helpers;
 using OnlineStore.Models;
 using OnlineStore.Models.Product;
 using OnlineStore.Reusorces;
@@ -13,6 +14,7 @@ using OnlineStore.ViewModels.ProductCategories;
 
 namespace OnlineStore.Controllers
 {
+    [AuthorizeRole(Roles = RoleNames.ManagerOrAdmin)]
     public class ProductCategoriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

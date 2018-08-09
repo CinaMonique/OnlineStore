@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using OnlineStore.Helpers;
 using OnlineStore.Models;
 using OnlineStore.Models.Product;
 using OnlineStore.Reusorces;
@@ -14,6 +15,7 @@ using OnlineStore.ViewModels.ProductSizes;
 
 namespace OnlineStore.Controllers
 {
+    [AuthorizeRole(Roles = RoleNames.ManagerOrAdmin)]
     public class SizesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

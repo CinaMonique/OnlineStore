@@ -207,6 +207,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AuthorizeRoleAttribute.cs" />
     <Compile Include="Helpers\IdentityHelper.cs" />
     <Compile Include="Models\RoleNames.cs" />
     <Compile Include="Helpers\PriceRangeAttribute.cs" />
@@ -349,6 +350,8 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Products\UserProductList.cshtml" />
     <Content Include="Views\Products\UserDetails.cshtml" />
+    <Content Include="Views\Products\LackOfProduct.cshtml" />
+    <Content Include="Views\Shared\Unauthorized.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

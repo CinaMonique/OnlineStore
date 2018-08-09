@@ -307,3 +307,16 @@ a.product-name-on-list {
   color: darkgray;
   font-weight: bold;
 }
+
+.danger-message-user {
+  color: #cc0000;
+  font-size: 20px;
+}
+
+.lack-of-product-info {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: darkgray;
+  margin-top: 40px;
+}
