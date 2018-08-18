@@ -29,6 +29,10 @@
                         <li>@Html.ActionLink("Kategorie produktów", "Index", "ProductCategories")</li>
                         <li>@Html.ActionLink("Rozmiary", "Index", "Sizes")</li>
                     }
+                    @if (User.IsInRole(RoleNames.Manager))
+                    {
+                        <li>@Html.ActionLink("Administracja", "Index", "Administration")</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

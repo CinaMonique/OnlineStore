@@ -22,5 +22,9 @@ namespace OnlineStore.Reusorces
         public const string ProductIdNotSpecified = "Product id is not specified";
 
         public const string ProductDoesNotExist = "Choosen product does not exist";
+
+        public const string UserIdNotSpecified = "User id is not specified";
+
+        public const string UserDoesNotExist = "Choosen user does not exist";
     }
 }
