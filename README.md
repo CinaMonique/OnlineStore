@@ -9,15 +9,28 @@ Technologie u¿yte przy implementacji aplikacji:
 * Bootstrap 3.3.7
 * jQuery 3.3.1
 
-Obecnie aplikacja umo¿liwia dokonywanie operacji CRUD na produktach, ich rozmiarach i kategoriach.  Na pasku g³ównym dodano dwie podstawowe zak³adki: _Produkty-admin_ oraz _Produkty-user_. Maj¹ one charakter pogl¹dowy pokazuj¹cy mo¿liwoœci administratora aplikacji oraz jej niezalogowanego u¿ytkownika. 
-Po dodaniu ról, które bêd¹ kolejnym krokiem w kierunku rozwoju aplikacji - bêdzie widoczny tylko widok produktów dla u¿ytkownika. Zaœ administrator po zalogowaniu siê bêdzie mia³ dostêp do innego widoku (obecnie pod zak³adk¹ _Produkty-admin_) ni¿ zwyk³y u¿ytkownik - widok ogranicza siê do funkcji, które sa wpisane w rolê administratora.
-Opróæz podstawowych ju¿ zdefiniowanych kategorii istnieje mo¿liwoœæ dodania w³asnych. Ponadto ka¿da kategoria posiada specyficzne dla siebie rozmiary dodawane przez administratora. Mo¿liwe jest tak¿e dodawanie w³asnych produktów.  
+Obecnie aplikacja umo¿liwia dokonywanie operacji CRUD na produktach, ich rozmiarach i kategoriach.  
+Oprócz podstawowych ju¿ zdefiniowanych kategorii istnieje mo¿liwoœæ dodania w³asnych. Ponadto ka¿da kategoria posiada specyficzne dla siebie rozmiary. Mo¿liwe jest tak¿e dodawanie w³asnych produktów wraz z ich zdjêciami. Ka¿da z tych akcji wymaga zalogowania na konto administratora lub managera sklepu.
+Na pasku g³ównym  w zale¿noœci od zdefiniowanych ról wyœwietlane s¹ nastêpuj¹ce zak³adki:
+*  _Produkty_ dla wszystkich u¿ytkowników
+*  _Produkty_ , _Kategorie produktów_ , _Rozmiary_  dla zalogowanych administratorów (dla zak³adki _Produkty_ widok  jest inny ni¿ dla u¿ytkownika)
+* wszystkie zak³adki administratora oraz zak³adka _Administracja_ dla zalogowanego managera sklepu, który oprócz podstawowych operacji na produktach mo¿e tak¿e dodawaæ i usuwaæ administratorów. 
 
 
 ### U¿ytkownicy
-W aplikacji bêdzie mo¿na wyró¿niæ dwa rodzaje u¿ytkowników: administrator oraz klient sklepu.  Po zaimplementowaniu ról ka¿da z nich posiadaæ bêdzie specyficzne dla siebie akcje.
+W aplikacji bêdzie mo¿na wyró¿niæ trzy rodzaje u¿ytkowników oraz przyk³adowe konta: 
+* User (user@cinamonn.pl)
+* Admin (monika@cinamonn.pl)
+* Manager (shopmanager@cinamonn.pl)
 
-###Planowany rozwój aplikacji:
+Dla ka¿dego z tych kont mo¿na zalogowaæ siê przy u¿yciu has³a: Zaq1@wsx. Mo¿liwe jest równie¿ za³o¿enie w³asnego konta przy u¿yciu dowolnie wybranej domeny.
+
+Rola u¿ytkownika (_User_) przypisana jest do ka¿dego u¿ytkownika zak³adaj¹cego konto w aplikacji.
+Rola administratora (_Admin_) przypisywana jest u¿ytkownikowi wy³¹cznie przez managera sklepu, który jest jedynym tego typu u¿ytkownikiem . Administratorem mo¿e zostaæ tylko pracownik sklepu tzn. musi posiadaæ konto w domenie _cinamonn.pl_.
+Rola managera (_Manager_) dodawana jest do domyœlnego u¿ytkownika, który tworzony jest w momencie startu aplikacji.
+Ka¿dy z powy¿szych typów u¿ytkowników posiada mo¿liwoœæ zmiany has³a.
+
+### Planowany rozwój aplikacji:
 * podkategorie produktów
 * filtry do przeszukiwania produktów 
 * dodawanie produktów do koszyka, zwiêkszanie ich ilosci oraz usuwanie z koszyka
