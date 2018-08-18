@@ -22,19 +22,25 @@ namespace OnlineStore.Controllers
         // GET: Administration
         public ActionResult Index()
         {
-            string adminRoleId = db.Roles.First(r => r.Name == RoleNames.Admin).Id;
+            string adminRoleId = GetRoleId(RoleNames.Admin);
             List<AdminViewModel> adminsViewModel = db.Users.Where(u => u.Roles.Any(r => r.RoleId == adminRoleId))
-                .Select(u => new AdminViewModel {
+                .Select(u => new AdminViewModel
+                {
                     UserId = u.Id,
                     UserName = u.UserName
                 }).ToList();
             return View(adminsViewModel);
         }
 
+        private string GetRoleId(string roleName)
+        {
+            return db.Roles.First(r => r.Name == roleName).Id;
+        }
+
         //GET: Administration/Create
         public ActionResult Create()
         {
-            string userRoleId = db.Roles.First(r => r.Name == RoleNames.User).Id;
+            string userRoleId = GetRoleId(RoleNames.User);
             var shopEmployees = db.Users.Where(u => u.Email.Contains("@cinamonn.pl") && u.Roles.Any(r => r.RoleId == userRoleId)).ToList();
             ViewBag.UserId = new SelectList(shopEmployees, "Id", "UserName", shopEmployees.Any() ? shopEmployees[0].Id : null);
             return View();
@@ -47,7 +53,7 @@ namespace OnlineStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                UserManager<ApplicationUser> userManager = GetUserManager();
                 ApplicationUser user = userManager.FindById(adminViewModel.UserId);
                 if (user == null)
                 {
@@ -57,10 +63,15 @@ namespace OnlineStore.Controllers
                 userManager.AddToRole(adminViewModel.UserId, RoleNames.Admin);
                 return RedirectToAction("Index");
             }
-            string userRoleId = db.Roles.First(r => r.Name == RoleNames.User).Id;
+            string userRoleId = GetRoleId(RoleNames.User);
             var shopEmployees = db.Users.Where(u => u.Email.Contains("@cinamonn.pl") && u.Roles.Any(r => r.RoleId == userRoleId)).ToList();
             ViewBag.UserId = new SelectList(shopEmployees, "Id", "UserName", shopEmployees.Any() ? shopEmployees[0].Id : null);
             return View();
+        }
+
+        private UserManager<ApplicationUser> GetUserManager()
+        {
+            return new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
         }
 
         //GET: Administration/Delete/5
@@ -70,7 +81,7 @@ namespace OnlineStore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.UserIdNotSpecified);
             }
-            UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            UserManager<ApplicationUser> userManager = GetUserManager();
             ApplicationUser user = userManager.FindById(id);
             if (user == null)
             {
@@ -85,7 +96,7 @@ namespace OnlineStore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            UserManager<ApplicationUser> userManager = GetUserManager();
             ApplicationUser user = userManager.FindById(id);
             if (user == null)
             {
