@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OnlineStore.Models.Product;
+using OnlineStore.Models.ShoppingCart;
 
 namespace OnlineStore.Models
 {
@@ -17,6 +18,10 @@ namespace OnlineStore.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public string CartId { get; set; }
+
+        public virtual Cart UserCart { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -31,10 +36,14 @@ namespace OnlineStore.Models
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
 
-        public System.Data.Entity.DbSet<Size> Sizes { get; set; }
+        public DbSet<Size> Sizes { get; set; }
 
-        public System.Data.Entity.DbSet<Product.Product> Products { get; set; }
+        public DbSet<Product.Product> Products { get; set; }
+
+        public DbSet<Cart> Carts { get; set; }
+
+        public DbSet<CartItem> CartItems { get; set; }
     }
 }

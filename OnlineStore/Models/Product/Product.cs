@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using OnlineStore.Models.ShoppingCart;
 
 namespace OnlineStore.Models.Product
 {
@@ -37,6 +38,6 @@ namespace OnlineStore.Models.Product
         public virtual ProductCategory ProductCategory { get; set; }
         public virtual ICollection<Photos> ProductPhotos { get; set; }
         public virtual ICollection<ProductDetails> ProductDetailsList { get; set; }
-        //public virtual ICollection<CartItem> Items { get; set; }
+        public virtual ICollection<CartItem> CartItems { get; set; }
     }
 }
