@@ -12,7 +12,7 @@
         </li>
         @if (User.IsInRole(RoleNames.User))
         {
-            <li>@Html.ActionLink("Koszyk", "ShowCart", "Cart", new {userId = User.Identity.GetUserId()}, null)</li>
+            <li>@Html.ActionLink("Koszyk", "ShowCart", "Cart")</li>
         }
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Wyloguj się</a></li>
     </ul>

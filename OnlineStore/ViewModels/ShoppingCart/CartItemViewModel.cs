@@ -48,7 +48,5 @@ namespace OnlineStore.ViewModels.ShoppingCart
 
         // MVC requires public constructor
         public CartItemViewModel() { }
-
-
     }
 }

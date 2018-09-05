@@ -9,10 +9,10 @@ namespace OnlineStore.Models.ShoppingCart
     public class CartItem
     {
         [Key]
-        public int CartItemId { get; set; }
+        public long CartItemId { get; set; }
 
         [Required]
-        public int ProductId { get; set; }
+        public long ProductId { get; set; }
 
         [Required]
         public string CartId { get; set; }

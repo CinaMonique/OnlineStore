@@ -1,4 +1,5 @@
-﻿@model OnlineStore.ViewModels.Products.ProductViewModel
+﻿@using OnlineStore.Models
+@model OnlineStore.ViewModels.Products.ProductViewModel
 
 @{
     ViewBag.Title = Model.ProductName;
@@ -48,7 +49,7 @@
                     @Html.DisplayFor(model => model.ProductName)
                 </div>
                 <div class="product-code">
-                    @Html.DisplayNameFor(model => model.ProductCode): 
+                    @Html.DisplayNameFor(model => model.ProductCode):
                     @Html.DisplayFor(model => model.ProductCode)
                 </div>
                 <hr />
@@ -63,29 +64,35 @@
                 <div class="sizes-in-details">
                     @if (Model.ProductDetailsListViewModel.Count == 1)
                     {
-                        @Html.Label(Model.ProductDetailsListViewModel.First().SizeName, new { @class = "label-one-size" })
-                        //TODO: Assign amount of product to cart item
+                        string sizeName = Model.ProductDetailsListViewModel.First().SizeName;
+                        @Html.RadioButton("CheckedSize", sizeName, new { @class = " radio-sizes label-one-size", @checked = "checked" })
+                        @Html.Label(sizeName, new { @class = "label-sizes" })
                     }
                     else
                     {
                         <p class="check-size">Wybierz rozmiar:</p>
                         foreach (var item in Model.ProductDetailsListViewModel)
                         {
-                            if (item.Amount == 0)
-                            {
-                                @Html.RadioButton("CheckedSize", item.SizeName, new { @class = "radio-sizes", @id = item.SizeName, disabled = "disabled" })
-                            }
-                            else
-                            {
-                                @Html.RadioButton("CheckedSize", item.SizeName, new { @class = "radio-sizes", @id = item.SizeName })
-                            }
-                            @Html.Label(item.SizeName, new { @class = "label-sizes" })
+                            <label>
+                                @if (item.Amount == 0)
+                                {
+                                    @Html.RadioButton("CheckedSize", item.SizeName, new { @class = "radio-sizes", disabled = "disabled" })
+                                }
+                                else
+                                {
+                                    @Html.RadioButton("CheckedSize", item.SizeName, new { @class = "radio-sizes"})
+                                }
+                                <span class="label-sizes">@item.SizeName</span>
+                            </label>
                         }
                     }
                 </div>
 
                 <div>
-                    <button class="btn btn-info" id="add-product-button">
+                    @{
+                        string addProductAction = Request.IsAuthenticated ? (User.IsInRole(RoleNames.User) ? $"addProduct({Model.ProductId})" : "") : "showLoginRequired()";
+                    }
+                    <button onclick="@addProductAction" class="btn btn-info @(User.IsInRole(RoleNames.Manager) || User.IsInRole(RoleNames.Admin) ? "disabled" : "")" id="add-product-button">
                         <span class="glyphicon glyphicon-shopping-cart"></span> DODAJ DO KOSZYKA
                     </button>
                 </div>
@@ -101,6 +108,21 @@
                 <p class="benefits"> <span class="glyphicon glyphicon-gift benefit-icons"></span> Podaruj jako prezent</p>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="add-product-modal" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div id="add-product-modal-body" class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info custom-button" data-dismiss="modal">Zamknij</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -126,6 +148,36 @@
         target.fadeTo(300, 0.30, function () {
             $(this).attr("src", src);
         }).fadeTo(200, 1);
+    }
+
+    function addProduct(id) {
+        var size = $("input[name = 'CheckedSize']:checked").val();
+        if (size === undefined) {
+            showModalContent("Proszę wybrać rozmiar produktu");
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddToCart", "Cart")',
+                data: '{ productId: "' + id + '", checkedSize: "'+ size + '" }',
+                contentType: "application/json",
+                success: function (response) {
+                    showModalContent(response);
+                },
+                error: function(res, status, err) {
+                    alert(err);
+                }
+            });
+        }
+     }
+
+    function showLoginRequired() {
+        showModalContent("Zaloguj się, aby móc dodać produkt do koszyka");
+    }
+
+    function showModalContent(message) {
+        $("#add-product-modal-body").html(message);
+        $("#add-product-modal").modal('toggle');
     }
 
 </script>
