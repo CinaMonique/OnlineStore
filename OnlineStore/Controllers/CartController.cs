@@ -93,6 +93,23 @@ namespace OnlineStore.Controllers
             return Content("Produkt dodano do koszyka");
         }
 
+        // POST: Cart/DeleteItem
+        public ActionResult DeleteItem(long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ErrorMessage.CartItemIdNotSpecified);
+            }
+            CartItem cartItem = db.CartItems.Find(id);
+            if (cartItem == null)
+            {
+                return HttpNotFound(ErrorMessage.CartItemDoesNotExist);
+            }
+            db.Entry(cartItem).State = EntityState.Deleted;
+            db.SaveChanges();
+            return RedirectToAction("ShowCart");
+        }
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)

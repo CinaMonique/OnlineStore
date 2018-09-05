@@ -38,9 +38,12 @@ else
                 <th>
                     @Html.DisplayNameFor(model => model.Price)
                 </th>
+                <th></th>
             </tr>
+            @{decimal total = 0;}
             @foreach (var item in Model)
             {
+                total += item.Quantity * item.Price;
                 <tr>
                     @if (File.Exists(Path.Combine(Server.MapPath("~/Images"), item.PhotoPath)))
                     {
@@ -71,25 +74,24 @@ else
                         @Html.DisplayFor(modelItem => item.Price)
                     </td>
                     <td>
-                        <a href="@Url.Action("Delete", new {id = item.CartItemId})">
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                            Usuń
-                        </a>
+                        <span class="glyphicon glyphicon-remove remove-item" aria-hidden="true"></span>
+                        @Ajax.ActionLink("Usuń", "DeleteItem", new { id = item.CartItemId }, new AjaxOptions { HttpMethod = "POST", OnSuccess = "window.location.reload()" })
                     </td>
                 </tr>
             }
         </table>
-        <hr/>
+
+        <hr />
         <p class="total-in-cart">
-            SUMA: <span id="total-prize-cart">  </span>
+            SUMA: <span id="total-prize-cart"> @total zł</span>
         </p>
 
         <div class="form-group cart-buttons">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" name="shopping" value="Zapisz zmiany i wróc do zakupów" class="btn btn-default custom-button" />
+                <input type="submit" name="shopping" value="Zapisz zmiany i wróc do zakupów" class="btn btn-info custom-button" />
             </div>
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" name="order" value="Przejdź do zamówienia" class="btn btn-default custom-button" />
+                <input type="submit" name="order" value="Przejdź do zamówienia" class="btn btn-info custom-button" />
             </div>
         </div>
     }
