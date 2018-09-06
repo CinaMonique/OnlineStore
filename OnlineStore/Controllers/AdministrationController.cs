@@ -14,7 +14,7 @@ using OnlineStore.ViewModels.Administration;
 
 namespace OnlineStore.Controllers
 {
-    [Authorize(Roles = RoleNames.Manager)]
+    [AuthorizeRole(Roles = RoleNames.Manager)]
     public class AdministrationController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
