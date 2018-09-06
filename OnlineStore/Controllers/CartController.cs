@@ -68,10 +68,10 @@ namespace OnlineStore.Controllers
             {
                 cart.Items = new List<CartItem>();
             }
-            CartItem cartItem;
-            if (cart.Items.Any(i => i.ProductId == productId && i.CheckedSize == checkedSize))
+
+            CartItem cartItem = cart.Items.SingleOrDefault(i => i.ProductId == productId && i.CheckedSize == checkedSize);
+            if (cartItem != null)
             {
-                cartItem = cart.Items.Single(i => i.ProductId == productId && i.CheckedSize == checkedSize);
                 if (cartItem.Quantity >= product.ProductDetailsList.FirstOrDefault(s => s.SizeName == checkedSize).Amount)
                 {
                     return Content("Brak wystarczającej ilości produktu");
