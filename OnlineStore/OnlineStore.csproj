@@ -199,6 +199,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductCategoriesController.cs" />
@@ -209,6 +210,8 @@
     </Compile>
     <Compile Include="Helpers\AuthorizeRoleAttribute.cs" />
     <Compile Include="Helpers\IdentityHelper.cs" />
+    <Compile Include="Models\ShoppingCart\CartItem.cs" />
+    <Compile Include="Models\ShoppingCart\Cart.cs" />
     <Compile Include="Models\RoleNames.cs" />
     <Compile Include="Helpers\PriceRangeAttribute.cs" />
     <Compile Include="Migrations\201806272119513_InitialCreate.cs" />
@@ -233,11 +236,13 @@
     <Compile Include="ViewModels\ProductSizes\SizeViewModel.cs" />
     <Compile Include="ViewModels\Products\ProductViewModel.cs" />
     <Compile Include="ViewModels\Products\ProductBriefViewModel.cs" />
+    <Compile Include="ViewModels\ShoppingCart\CartItemViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\AppImages\1.jpg" />
     <Content Include="Content\AppImages\2.jpg" />
     <Content Include="Content\AppImages\3.png" />
+    <Content Include="Content\AppImages\empty_cart.png" />
     <Content Include="Content\AppImages\kombinezon.jpg" />
     <Content Include="Content\AppImages\koszula.jpg" />
     <Content Include="Content\AppImages\sandały.jpg" />
@@ -280,6 +285,8 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -356,11 +363,11 @@
     <Content Include="Views\Administration\Index.cshtml" />
     <Content Include="Views\Administration\Create.cshtml" />
     <Content Include="Views\Administration\Delete.cshtml" />
+    <Content Include="Views\Cart\ShowCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\" />
-    <Folder Include="Models\Cart\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

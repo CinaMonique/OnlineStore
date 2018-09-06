@@ -10,12 +10,15 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using OnlineStore.Helpers;
 using OnlineStore.Models;
+using OnlineStore.Models.ShoppingCart;
 
 namespace OnlineStore.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -161,6 +164,7 @@ namespace OnlineStore.Controllers
                 if (result.Succeeded)
                 {
                     UserManager.AddToRole(user.Id, RoleNames.User);
+                    AssignShoppingCartToUser(user);
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -176,6 +180,14 @@ namespace OnlineStore.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        private void AssignShoppingCartToUser(ApplicationUser user)
+        {
+            Cart cart = new Cart();
+            cart.CartId = user.Id;
+            db.Carts.Add(cart);
+            db.SaveChanges();
         }
 
         //
@@ -378,6 +390,7 @@ namespace OnlineStore.Controllers
                 if (result.Succeeded)
                 {
                     UserManager.AddToRole(user.Id, RoleNames.User);
+                    AssignShoppingCartToUser(user);
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {

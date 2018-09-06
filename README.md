@@ -16,6 +16,10 @@ Na pasku g³ównym  w zale¿noœci od zdefiniowanych ról wyœwietlane s¹ nastêpuj¹ce 
 *  _Produkty_ , _Kategorie produktów_ , _Rozmiary_  dla zalogowanych administratorów (dla zak³adki _Produkty_ widok  jest inny ni¿ dla u¿ytkownika)
 * wszystkie zak³adki administratora oraz zak³adka _Administracja_ dla zalogowanego managera sklepu, który oprócz podstawowych operacji na produktach mo¿e tak¿e dodawaæ i usuwaæ administratorów. 
 
+Aby dodaæ konkretny produkt do koszyka nale¿y uprzednio wybraæ jego rozmiar. Aplikacja sprawdza czy rozmiar zosta³ zaznaczony oraz czy dostêpna jest odpowiednia iloœæ produktu, a nastêpnie pokazuje odpowiednie komunikaty u¿ytkownikowi. 
+Gdy iloœæ danego rozmiaru zmaleje do zera to jego opcja zostaje wyszarzona uniemo¿liwiaj¹c jej wybór.
+Dostêp do koszyka oraz opcja dodawania do niego produktów mo¿liwe s¹ tylko dla zalogowanych u¿ytkowników posiadaj¹cych rolê _User_.  Aby zabezpieczyæ oraz odseparowaæ funkcjê zarz¹dzania sklepem, role _Administrator_ oraz _Manager_ nie posiadaj¹ koszyka.
+W widoku koszyka u¿ytkownik mo¿e zmieniæ iloœæ wybranego rozmiaru, co powoduje równie¿ dynamiczn¹ zmianê ceny ca³ego zamówienia. Istnieje równie¿ opcja usuniêcia produktu z koszyka.
 
 ### U¿ytkownicy
 W aplikacji bêdzie mo¿na wyró¿niæ trzy rodzaje u¿ytkowników oraz przyk³adowe konta: 
@@ -32,8 +36,7 @@ Ka¿dy z powy¿szych typów u¿ytkowników posiada mo¿liwoœæ zmiany has³a.
 
 ### Planowany rozwój aplikacji:
 * podkategorie produktów
-* filtry do przeszukiwania produktów 
-* dodawanie produktów do koszyka, zwiêkszanie ich ilosci oraz usuwanie z koszyka
+* filtry do przeszukiwania produktów
 * przejscie do zamówienia, w którym dostêpny jest podglad dodanych produktów oraz mo¿liwosæ edycji swoich danych osobowych do wysy³ki
 * mo¿liwosæ edycji adresu, który jest póŸniej automatycznie pobierany do danych w zamówieniu
 * podglad dokonanych zamówieñ.

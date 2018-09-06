@@ -31,9 +31,9 @@
   height: 100%
 }
 
-.product-photo-user:hover {
+  .product-photo-user:hover {
     opacity: 0.7;
-}
+  }
 
 .product-photo-user-detaiis {
   max-width: 55px;
@@ -41,9 +41,9 @@
   cursor: pointer;
 }
 
-.product-photo-user-detaiis:hover {
-  opacity: 0.7;
-}
+  .product-photo-user-detaiis:hover {
+    opacity: 0.7;
+  }
 
 .product-name-on-list {
   padding-top: 6px;
@@ -59,10 +59,10 @@ a.product-name-on-list {
   font-weight: bold;
 }
 
-.product-view-link:hover {
-  color: #00b8e6;
-  text-decoration: none;
- }
+  .product-view-link:hover {
+    color: #00b8e6;
+    text-decoration: none;
+  }
 
 .main {
   display: table-cell;
@@ -150,14 +150,15 @@ a.product-name-on-list {
   background-color: #00b8e6;
 }
 
-#add-product-button:hover {
-  background-color: #008fb3;
-}
+  #add-product-button:hover {
+    background-color: #008fb3;
+  }
 
 #product-return-list {
   padding-top: 60px;
   letter-spacing: 1px;
   color: #008fb3;
+  text-decoration: none;
 }
 
 .benefit-icons {
@@ -187,8 +188,8 @@ a.product-name-on-list {
 }
 
 .radio-sizes:checked + .label-sizes {
-  border-color: #00b8e6;
-  border-width: 1.5px;
+    border-color: #00b8e6;
+    border-width: 1.5px;
 }
 
 .label-one-size {
@@ -266,7 +267,7 @@ a.product-name-on-list {
   font-size: 25px;
   font-family: Tahoma;
   letter-spacing: 5px;
-  color: orange; 
+  color: orange;
 }
 
 .home-category-header {
@@ -319,4 +320,70 @@ a.product-name-on-list {
   font-weight: bold;
   color: darkgray;
   margin-top: 40px;
+}
+
+.cart-photo {
+  display: block;
+  margin: auto;
+  width: 15%;
+}
+
+.empty-cart {
+  text-align: center;
+  font-weight: bold;
+  font-size: 35px;
+  color: dimgray;
+  letter-spacing: 1px;
+}
+
+.cart-product-photo {
+  width: 80px;
+  height: 110px;
+}
+
+.total-in-cart {
+  font-weight: bold;
+  font-size: 14px;
+  float: right;
+}
+
+.quantity-cart {
+  width: 85px;
+}
+
+a {
+  color: #00b8e6;
+}
+
+a:hover {
+    color: #008fb3;
+    text-decoration: none
+}
+
+.modal {
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.cart-buttons {
+  display: flex;
+  margin-top: 60px;
+}
+
+.remove-item {
+  color: #00b8e6;
 }
