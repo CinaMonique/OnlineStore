@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OnlineStore.ViewModels.ShoppingCart.CartItemViewModel>
+﻿@model List<OnlineStore.ViewModels.ShoppingCart.CartItemViewModel>
 
 @{
     ViewBag.Title = "Koszyk";
@@ -23,32 +23,32 @@ else
         <table class="table">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.ProductName)
+                    @Html.DisplayNameFor(model => model.First().ProductName)
                 </th>
                 <th></th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ProductCode)
+                    @Html.DisplayNameFor(model => model.First().ProductCode)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ProductSize)
+                    @Html.DisplayNameFor(model => model.First().ProductSize)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Quantity)
+                    @Html.DisplayNameFor(model => model.First().Quantity)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Price)
+                    @Html.DisplayNameFor(model => model.First().Price)
                 </th>
                 <th></th>
             </tr>
             @{decimal total = 0;}
-            @foreach (var item in Model)
+            @for(int i = 0; i < Model.Count(); i++)
             {
-                total += item.Quantity * item.Price;
+                total += Model[i].Quantity * Model[i].Price;
                 <tr>
-                    @if (File.Exists(Path.Combine(Server.MapPath("~/Images"), item.PhotoPath)))
+                    @if (File.Exists(Path.Combine(Server.MapPath("~/Images"), Model[i].PhotoPath)))
                     {
                         <td>
-                            <img src="~/Images/@Url.Content(item.PhotoPath)" alt="Zdjęcie główne" class="cart-product-photo" />
+                            <img src="~/Images/@Url.Content(Model.ElementAt(i).PhotoPath)" alt="Zdjęcie główne" class="cart-product-photo" />
                         </td>
                     }
                     else
@@ -58,24 +58,24 @@ else
                         </td>
                     }
                     <td>
-                        @Html.ActionLink(item.ProductName, "UserDetails", "Products", new { id = item.ProductId }, null)
+                        @Html.ActionLink(Model[i].ProductName, "UserDetails", "Products", new { id = Model[i].ProductId }, null)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ProductCode)
+                        @Html.DisplayFor(modelItem => modelItem[i].ProductCode)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ProductSize)
+                        @Html.DisplayFor(modelItem => modelItem[i].ProductSize)
                     </td>
                     <td>
-                        @Html.EditorFor(modelItem => item.Quantity, new { htmlAttributes = new { @class = "form-control quantity-cart", min = "1" } })
-                        @Html.ValidationMessageFor(modelItem => item.Quantity, "", new { @class = "text-danger" })
+                        @Html.EditorFor(modelItem => modelItem[i].Quantity, new { htmlAttributes = new { @class = "form-control quantity-cart", min = "1" } })
+                        @Html.ValidationMessageFor(modelItem => modelItem[i].Quantity, "", new { @class = "text-danger" })
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Price)
+                        @Html.DisplayFor(modelItem => modelItem[i].Price)
                     </td>
                     <td>
                         <span class="glyphicon glyphicon-remove remove-item" aria-hidden="true"></span>
-                        @Ajax.ActionLink("Usuń", "DeleteItem", new { id = item.CartItemId }, new AjaxOptions { HttpMethod = "POST", OnSuccess = "window.location.reload()" })
+                        @Ajax.ActionLink("Usuń", "DeleteItem", new { id = Model[i].CartItemId }, new AjaxOptions { HttpMethod = "POST", OnSuccess = "window.location.reload()" })
                     </td>
                 </tr>
             }
