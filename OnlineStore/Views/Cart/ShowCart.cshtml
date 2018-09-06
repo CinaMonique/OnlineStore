@@ -71,7 +71,7 @@ else
                         @Html.ValidationMessageFor(modelItem => modelItem[i].Quantity, "", new { @class = "text-danger" })
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => modelItem[i].Price)
+                        <span class="item-price-cart">@Html.DisplayFor(modelItem => modelItem[i].Price)</span>
                     </td>
                     <td>
                         <span class="glyphicon glyphicon-remove remove-item" aria-hidden="true"></span>
@@ -83,17 +83,39 @@ else
 
         <hr />
         <p class="total-in-cart">
-            SUMA: <span id="total-prize-cart"> @total zł</span>
+            SUMA: <span id="total-prize-cart"> @total </span> zł
         </p>
 
         <div class="form-group cart-buttons">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" name="shopping" value="Zapisz zmiany i wróc do zakupów" class="btn btn-info custom-button" />
+                @Html.ActionLink("Wróć do zakupów", "Index", "Products", null, new { @class = "btn btn-info custom-button" })
             </div>
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" name="order" value="Przejdź do zamówienia" class="btn btn-info custom-button" />
             </div>
         </div>
+
+        <script>
+            $(document).ready(function () {
+                $(".quantity-cart").keyup(handleQuantityChange).change(handleQuantityChange);
+            });
+
+            function handleQuantityChange() {
+                var totalSum = 0.0;
+                $(".quantity-cart").each(function () {
+                    var quantity = parseInt($(this).val());
+                    if (isNaN(quantity) || quantity <= 0) {
+                        totalSum = NaN;
+                    } else {
+                        if (!isNaN(totalSum)) {
+                            var price = parseFloat($(this).closest("tr").find(".item-price-cart").html().replace(",", ".")).toFixed(2);
+                            totalSum += quantity * price;
+                        }
+                    }
+                });
+                $("#total-prize-cart").html(isNaN(totalSum) ? "0.00" : totalSum.toFixed(2));
+            };
+        </script>
     }
 }
 
