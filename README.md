@@ -9,7 +9,16 @@ Technologie u¿yte przy implementacji aplikacji:
 * Bootstrap 3.3.7
 * jQuery 3.3.1
 
+_Strona g³ówna apliakcji:_
+
+![](ExampleViews/MainPage.png)
+
 Obecnie aplikacja umo¿liwia dokonywanie operacji CRUD na produktach, ich rozmiarach i kategoriach.  
+
+_Jeden z formularzy - dodawanie produktu:_
+
+![](ExampleViews/AddingProduct.png)
+
 Oprócz podstawowych ju¿ zdefiniowanych kategorii istnieje mo¿liwoœæ dodania w³asnych. Ponadto ka¿da kategoria posiada specyficzne dla siebie rozmiary. Mo¿liwe jest tak¿e dodawanie w³asnych produktów wraz z ich zdjêciami. Ka¿da z tych akcji wymaga zalogowania na konto administratora lub managera sklepu.
 Na pasku g³ównym  w zale¿noœci od zdefiniowanych ról wyœwietlane s¹ nastêpuj¹ce zak³adki:
 *  _Produkty_ dla wszystkich u¿ytkowników
@@ -19,11 +28,20 @@ Na pasku g³ównym  w zale¿noœci od zdefiniowanych ról wyœwietlane s¹ nastêpuj¹ce 
 Aby dodaæ konkretny produkt do koszyka nale¿y uprzednio wybraæ jego rozmiar. Aplikacja sprawdza czy rozmiar zosta³ zaznaczony oraz czy dostêpna jest odpowiednia iloœæ produktu, a nastêpnie pokazuje odpowiednie komunikaty u¿ytkownikowi. 
 Gdy iloœæ danego rozmiaru zmaleje do zera to jego opcja zostaje wyszarzona uniemo¿liwiaj¹c jej wybór.
 
+_Przyk³adowy widok produktu_:
+
+![](ExampleViews/UserProductView.png)
+
 Dostêp do koszyka oraz opcja dodawania do niego produktów mo¿liwe s¹ tylko dla zalogowanych u¿ytkowników posiadaj¹cych rolê _User_.  Aby zabezpieczyæ oraz odseparowaæ funkcjê zarz¹dzania sklepem, role _Administrator_ oraz _Manager_ nie posiadaj¹ koszyka.
 
 W widoku koszyka u¿ytkownik mo¿e zmieniæ iloœæ wybranego rozmiaru, co powoduje równie¿ dynamiczn¹ zmianê ceny ca³ego zamówienia. Istnieje równie¿ opcja usuniêcia produktu z koszyka.
 
 Koszyk w bazie danych zawiera dwa przyk³adowe produkty.
+
+_Przyk³adowy widok koszyka:_
+
+![](ExampleViews/Cart.png)
+
 
 ### U¿ytkownicy
 W aplikacji bêdzie mo¿na wyró¿niæ trzy rodzaje u¿ytkowników oraz przyk³adowe konta: 
@@ -34,9 +52,25 @@ W aplikacji bêdzie mo¿na wyró¿niæ trzy rodzaje u¿ytkowników oraz przyk³adowe kon
 Dla ka¿dego z tych kont mo¿na zalogowaæ siê przy u¿yciu has³a: Zaq1@wsx. Mo¿liwe jest równie¿ za³o¿enie w³asnego konta przy u¿yciu dowolnie wybranej domeny.
 
 Rola u¿ytkownika (_User_) przypisana jest do ka¿dego u¿ytkownika zak³adaj¹cego konto w aplikacji.
+
+_Przyk³adowy widok listy produktów dla roli User:_
+
+![](ExampleViews/UserProductsList.png)
+
 Rola administratora (_Admin_) przypisywana jest u¿ytkownikowi wy³¹cznie przez managera sklepu, który jest jedynym tego typu u¿ytkownikiem . Administratorem mo¿e zostaæ tylko pracownik sklepu tzn. musi posiadaæ konto w domenie _cinamonn.pl_.
+
+_Przyk³adowy widok listy administratorów dla roli Manager:_
+
+![](ExampleViews/AdminsList.png)
+
 Rola managera (_Manager_) dodawana jest do domyœlnego u¿ytkownika, który tworzony jest w momencie startu aplikacji.
+
+_Przyk³adowy widok listy produktów dla roli Admin i Manager:_
+
+![](ExampleViews/AdminProductsList.PNG)
+
 Ka¿dy z powy¿szych typów u¿ytkowników posiada mo¿liwoœæ zmiany has³a.
+
 
 ### Planowany rozwój aplikacji:
 * podkategorie produktów
@@ -44,6 +78,7 @@ Ka¿dy z powy¿szych typów u¿ytkowników posiada mo¿liwoœæ zmiany has³a.
 * przejscie do zamówienia, w którym dostêpny jest podglad dodanych produktów oraz mo¿liwosæ edycji swoich danych osobowych do wysy³ki
 * mo¿liwosæ edycji adresu, który jest póŸniej automatycznie pobierany do danych w zamówieniu
 * podglad dokonanych zamówieñ.
+
 
 ### Informacje dodatkowe
 W celach demonstracyjnych za³¹czona zosta³a przyk³adowa baza danych sklepu.
