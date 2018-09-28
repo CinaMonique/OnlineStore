@@ -44,7 +44,7 @@ _Przyk³adowy widok koszyka:_
 
 
 ### U¿ytkownicy
-W aplikacji bêdzie mo¿na wyró¿niæ trzy rodzaje u¿ytkowników oraz przyk³adowe konta: 
+W aplikacji mo¿na wyró¿niæ trzy rodzaje u¿ytkowników oraz przyk³adowe konta: 
 * User (user@cinamonn.pl)
 * Admin (monika@cinamonn.pl)
 * Manager (shopmanager@cinamonn.pl)
@@ -53,7 +53,7 @@ Dla ka¿dego z tych kont mo¿na zalogowaæ siê przy u¿yciu has³a: Zaq1@wsx. Mo¿liwe
 
 Rola u¿ytkownika (_User_) przypisana jest do ka¿dego u¿ytkownika zak³adaj¹cego konto w aplikacji.
 
-_Przyk³adowy widok listy produktów dla roli User:_
+_Przyk³adowy widok listy produktów dla niezalogowanych u¿ytkowników oraz u¿ytkowników z rol¹ User:_
 
 ![](ExampleViews/UserProductsList.png)
 
